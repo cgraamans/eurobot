@@ -19,7 +19,7 @@ export class Telegram {
 
     constructor() {
 
-        this.client = new TelegramBot(process.env.EUROBOT_TGTOKEN,{polling:true});
+        this.client = new TelegramBot(process.env.EUROBOT_TELEGRAM_TOKEN,{polling:true});
 
     }
 

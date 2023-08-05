@@ -10,11 +10,10 @@ export class reddit {
 
         this.client = require("snoowrap");
         this.client = new Snoowrap({
-            userAgent: 'GotterfunkenPostingBot',
-            clientId: process.env.FG_REDDIT_CLIENT_ID,
-            clientSecret: process.env.FG_REDDIT_CLIENT_SECRET,
-            username: process.env.FG_REDDIT_USER,
-            password: process.env.FG_REDDIT_PASS
+            userAgent: 'Eurobot',
+            clientId: process.env.EUROBOT_REDDIT_CLIENT_ID,
+            clientSecret: process.env.EUROBOT_REDDIT_CLIENT_SECRET,
+            refreshToken: process.env.EUROBOT_REDDIT_REFRESHTOKEN
         });
 
     }

@@ -22,9 +22,8 @@ export class Mastodon {
 
         const BASE_URL: string = 'https://mas.to';
         const access_token: string = process.env.EUROBOT_MASTO;
-        const toot: string = 'test toot';
         
-        this.client = generator('mastodon', BASE_URL, access_token)
+        this.client = generator('mastodon', BASE_URL, access_token);
 
     }
 
