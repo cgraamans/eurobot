@@ -13,7 +13,6 @@ import google from "./src/services/google";
 import Tools from './src/tools';
 
 import * as schedule from "node-schedule";
-import DB from '../../workers/src/lib/services/db';
 
 let jobs:schedule.Job[] = [];
 

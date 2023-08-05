@@ -3,7 +3,6 @@
   "version": "15.0.2",
   "description": "eurobot using discord.js v14",
   "main": "eurobot.js",
-  "type": "module",
   "scripts": {
     "start": "npx ts-node-dev --respawn --transpile-only eurobot.ts",
     "test": "npx tslint -c tslint.json '**/**/*.ts'",
