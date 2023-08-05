@@ -73,7 +73,7 @@ module.exports = {
 						text:message.content
 					}]);
 
-					const hasRole = message.member.roles.cache.some(role => ['Admin','Moderator','Staff','Eurobot','Sponsor','Booster'].includes(role.name));
+					const hasRole = message.member.roles.cache.some(role => ['Admin','Moderator','Trusted','Eurobot','Sponsor','Booster'].includes(role.name));
 					if(!hasRole) return;
 
 					const ModelArticle = new ArticleModel();
@@ -97,6 +97,10 @@ module.exports = {
 			if(message.type === MessageType.Reply) {
 
 				const parentMsg = await message.fetchReference();
+				
+				const hasRole = message.member.roles.cache.some(role => ['Admin','Moderator','Trusted','Eurobot','Sponsor','Booster'].includes(role.name));
+				if(!hasRole) return;
+				
 				if(!parentMsg.content.includes("https://")) return;
 				
 				message.mentions.channels.each(async channelMentioned=>{
@@ -105,11 +109,13 @@ module.exports = {
 					if(!channelMentioned.isTextBased()) return;
 					if(!channelMentioned.isThread()) return;
 
-					await channelMentioned.send(parentMsg.content);
+					await channelMentioned.send(`By ${message.author.toString()} in ${message.channel.toString()}\n${parentMsg.content}`);
 
 					return;
 
 				});
+
+				return;
 
 			}
 
