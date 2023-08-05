@@ -1,0 +1,339 @@
+[
+       {
+        "alias": "belgium",
+        "role_id": "424485780866465793",
+        "emoji": "🇧🇪",
+        "isAlias": null
+      },
+       {
+        "alias": "austria",
+        "role_id": "424486097968431104",
+        "emoji": "🇦🇹",
+        "isAlias": null
+      },
+       {
+        "alias": "at",
+        "role_id": "424486097968431104",
+        "emoji": "🇦🇹",
+        "isAlias": 1
+      },
+       {
+        "alias": "be",
+        "role_id": "424485780866465793",
+        "emoji": "🇧🇪",
+        "isAlias": 1
+      },
+       {
+        "alias": "bulgaria",
+        "role_id": "424486402290352129",
+        "emoji": "🇧🇬",
+        "isAlias": null
+      },
+       {
+        "alias": "bg",
+        "role_id": "424486402290352129",
+        "emoji": "🇧🇬",
+        "isAlias": 1
+      },
+       {
+        "alias": "croatia",
+        "role_id": "424486305699856385",
+        "emoji": "🇭🇷",
+        "isAlias": null
+      },
+       {
+        "alias": "hr",
+        "role_id": "424486305699856385",
+        "emoji": "🇭🇷",
+        "isAlias": 1
+      },
+       {
+        "alias": "dk",
+        "role_id": "424485528080089091",
+        "emoji": "🇩🇰",
+        "isAlias": 1
+      },
+       {
+        "alias": "denmark",
+        "role_id": "424485528080089091",
+        "emoji": "🇩🇰",
+        "isAlias": null
+      },
+       {
+        "alias": "estonia",
+        "role_id": "424485373406740480",
+        "emoji": "🇪🇪",
+        "isAlias": null
+      },
+       {
+        "alias": "ee",
+        "role_id": "424485373406740480",
+        "emoji": "🇪🇪",
+        "isAlias": 1
+      },
+       {
+        "alias": "fi",
+        "role_id": "424485277856169994",
+        "emoji": "🇫🇮",
+        "isAlias": 1
+      },
+       {
+        "alias": "finland",
+        "role_id": "424485277856169994",
+        "emoji": "🇫🇮",
+        "isAlias": null
+      },
+       {
+        "alias": "fr",
+        "role_id": "424486034097569805",
+        "emoji": "🇫🇷",
+        "isAlias": 1
+      },
+       {
+        "alias": "france",
+        "role_id": "424486034097569805",
+        "emoji": "🇫🇷",
+        "isAlias": null
+      },
+       {
+        "alias": "de",
+        "role_id": "424484443944910848",
+        "emoji": "🇩🇪",
+        "isAlias": 1
+      },
+       {
+        "alias": "germany",
+        "role_id": "424484443944910848",
+        "emoji": "🇩🇪",
+        "isAlias": null
+      },
+       {
+        "alias": "gr",
+        "role_id": "424486596176379915",
+        "emoji": "🇬🇷",
+        "isAlias": 1
+      },
+       {
+        "alias": "greece",
+        "role_id": "424486596176379915",
+        "emoji": "🇬🇷",
+        "isAlias": null
+      },
+       {
+        "alias": "hu",
+        "role_id": "424486151122845717",
+        "emoji": "🇭🇺",
+        "isAlias": 1
+      },
+       {
+        "alias": "hungary",
+        "role_id": "424486151122845717",
+        "emoji": "🇭🇺",
+        "isAlias": null
+      },
+       {
+        "alias": "ie",
+        "role_id": "424485614440939521",
+        "emoji": "🇮🇪",
+        "isAlias": 1
+      },
+       {
+        "alias": "ireland",
+        "role_id": "424485614440939521",
+        "emoji": "🇮🇪",
+        "isAlias": null
+      },
+       {
+        "alias": "italy",
+        "role_id": "424486450243829760",
+        "emoji": "🇮🇹",
+        "isAlias": null
+      },
+       {
+        "alias": "it",
+        "role_id": "424486450243829760",
+        "emoji": "🇮🇹",
+        "isAlias": 1
+      },
+       {
+        "alias": "lv",
+        "role_id": "424485415525810176",
+        "emoji": "🇱🇻",
+        "isAlias": 1
+      },
+       {
+        "alias": "latvia",
+        "role_id": "424485415525810176",
+        "emoji": "🇱🇻",
+        "isAlias": null
+      },
+       {
+        "alias": "lithuania",
+        "role_id": "424485473495547905",
+        "emoji": "🇱🇹",
+        "isAlias": null
+      },
+       {
+        "alias": "lt",
+        "role_id": "424485473495547905",
+        "emoji": "🇱🇹",
+        "isAlias": 1
+      },
+       {
+        "alias": "lu",
+        "role_id": "424485918833901579",
+        "emoji": "🇱🇺",
+        "isAlias": 1
+      },
+       {
+        "alias": "luxembourg",
+        "role_id": "424485918833901579",
+        "emoji": "🇱🇺",
+        "isAlias": null
+      },
+       {
+        "alias": "mt",
+        "role_id": "424486812933685250",
+        "emoji": "🇲🇹",
+        "isAlias": 1
+      },
+       {
+        "alias": "malta",
+        "role_id": "424486812933685250",
+        "emoji": "🇲🇹",
+        "isAlias": null
+      },
+       {
+        "alias": "nl",
+        "role_id": "424485672821325845",
+        "emoji": "🇳🇱",
+        "isAlias": 1
+      },
+       {
+        "alias": "netherlands",
+        "role_id": "424485672821325845",
+        "emoji": "🇳🇱",
+        "isAlias": null
+      },
+       {
+        "alias": "pl",
+        "role_id": "424485728404111360",
+        "emoji": "🇵🇱",
+        "isAlias": 1
+      },
+       {
+        "alias": "poland",
+        "role_id": "424485728404111360",
+        "emoji": "🇵🇱",
+        "isAlias": null
+      },
+       {
+        "alias": "sk",
+        "role_id": "424485968360243200",
+        "emoji": "🇸🇰",
+        "isAlias": 1
+      },
+       {
+        "alias": "slovakia",
+        "role_id": "424485968360243200",
+        "emoji": "🇸🇰",
+        "isAlias": null
+      },
+       {
+        "alias": "si",
+        "role_id": "424486266722058240",
+        "emoji": "🇸🇮",
+        "isAlias": 1
+      },
+       {
+        "alias": "slovenia",
+        "role_id": "424486266722058240",
+        "emoji": "🇸🇮",
+        "isAlias": null
+      },
+       {
+        "alias": "ro",
+        "role_id": "424486209830780928",
+        "emoji": "🇷🇴",
+        "isAlias": 1
+      },
+       {
+        "alias": "romania",
+        "role_id": "424486209830780928",
+        "emoji": "🇷🇴",
+        "isAlias": null
+      },
+       {
+        "alias": "es",
+        "role_id": "424486490987298816",
+        "emoji": "🇪🇸",
+        "isAlias": 1
+      },
+       {
+        "alias": "se",
+        "role_id": "424485205747695629",
+        "emoji": "🇸🇪",
+        "isAlias": 1
+      },
+       {
+        "alias": "spain",
+        "role_id": "424486490987298816",
+        "emoji": "🇪🇸",
+        "isAlias": null
+      },
+       {
+        "alias": "sweden",
+        "role_id": "424485205747695629",
+        "emoji": "🇸🇪",
+        "isAlias": null
+      },
+       {
+        "alias": "cy",
+        "role_id": "424486772039483395",
+        "emoji": "🇨🇾",
+        "isAlias": 1
+      },
+       {
+        "alias": "cyprus",
+        "role_id": "424486772039483395",
+        "emoji": "🇨🇾",
+        "isAlias": null
+      },
+       {
+        "alias": "cz",
+        "role_id": "424485846041886720",
+        "emoji": "🇨🇿",
+        "isAlias": 1
+      },
+       {
+        "alias": "czechia",
+        "role_id": "424485846041886720",
+        "emoji": "🇨🇿",
+        "isAlias": null
+      },
+       {
+        "alias": "pt",
+        "role_id": "424486356517912576",
+        "emoji": "🇵🇹",
+        "isAlias": 1
+      },
+       {
+        "alias": "portugal",
+        "role_id": "424486356517912576",
+        "emoji": "🇵🇹",
+        "isAlias": null
+      },
+       {
+        "alias": "non-eu",
+        "role_id": "820451679051841578",
+        "emoji": "🌐",
+        "isAlias": null
+      },
+       {
+        "alias": "netherlands",
+        "role_id": "648294077812703242",
+        "emoji": "🇳🇱",
+        "isAlias": null
+      }
+    ]
+  

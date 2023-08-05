@@ -1,0 +1,512 @@
+{
+
+    "Channels": [
+      {
+        "channel_id": "666281349551751183",
+        "category": "Ignore"
+      },
+      {
+         "channel_id": "277450613766356992",
+         "category": "Ignore"
+      },
+      {
+         "channel_id": "820485445015961610",
+         "category": "Ignore"
+      },
+      {
+         "channel_id": "311943982424784898",
+         "category": "Ignore"
+      },
+      {
+         "channel_id": "817966137782173716",
+         "category": "Twitter"
+      },
+      {
+        "channel_id": "609511947762925597",
+        "category": "Twitter"
+      },
+      {
+         "channel_id": "1026223849987125288",
+         "category": "Twitter"
+      },
+      {
+         "channel_id": "257838262943481857",
+         "category": "Job-Calendar"
+      },
+      {
+        "channel_id": "906134172916150272",
+        "category": "Job-Calendar"
+      },
+      {
+         "channel_id": "257838262943481857",
+         "category": "Job-News"
+      },
+      {
+         "channel_id": "906133903520190485",
+         "category": "Job-News"
+      },
+      {
+        "channel_id": "257838262943481857",
+        "category": "Timestop"
+      },
+      {
+         "channel_id": "257838262943481857",
+         "category": "Job-Calendar-EventCheck"
+      },
+      {
+         "channel_id": "277450613766356992",
+         "category": "Job-Calendar-EventCheck"
+      },
+      {
+        "channel_id": "898725203805356093",
+        "category": "Job-Calendar-EventCheck"
+      },
+      {
+        "channel_id": "609511947762925597",
+        "category": "Reddit-to-Articles"
+      }
+    ],
+
+    "Countries":[
+        {
+         "alias": "belgium",
+         "role_id": "424485780866465793",
+         "emoji": "🇧🇪",
+         "isAlias": null
+       },
+        {
+         "alias": "austria",
+         "role_id": "424486097968431104",
+         "emoji": "🇦🇹",
+         "isAlias": null
+       },
+        {
+         "alias": "at",
+         "role_id": "424486097968431104",
+         "emoji": "🇦🇹",
+         "isAlias": 1
+       },
+        {
+         "alias": "be",
+         "role_id": "424485780866465793",
+         "emoji": "🇧🇪",
+         "isAlias": 1
+       },
+        {
+         "alias": "bulgaria",
+         "role_id": "424486402290352129",
+         "emoji": "🇧🇬",
+         "isAlias": null
+       },
+        {
+         "alias": "bg",
+         "role_id": "424486402290352129",
+         "emoji": "🇧🇬",
+         "isAlias": 1
+       },
+        {
+         "alias": "croatia",
+         "role_id": "424486305699856385",
+         "emoji": "🇭🇷",
+         "isAlias": null
+       },
+        {
+         "alias": "hr",
+         "role_id": "424486305699856385",
+         "emoji": "🇭🇷",
+         "isAlias": 1
+       },
+        {
+         "alias": "dk",
+         "role_id": "424485528080089091",
+         "emoji": "🇩🇰",
+         "isAlias": 1
+       },
+        {
+         "alias": "denmark",
+         "role_id": "424485528080089091",
+         "emoji": "🇩🇰",
+         "isAlias": null
+       },
+        {
+         "alias": "estonia",
+         "role_id": "424485373406740480",
+         "emoji": "🇪🇪",
+         "isAlias": null
+       },
+        {
+         "alias": "ee",
+         "role_id": "424485373406740480",
+         "emoji": "🇪🇪",
+         "isAlias": 1
+       },
+        {
+         "alias": "fi",
+         "role_id": "424485277856169994",
+         "emoji": "🇫🇮",
+         "isAlias": 1
+       },
+        {
+         "alias": "finland",
+         "role_id": "424485277856169994",
+         "emoji": "🇫🇮",
+         "isAlias": null
+       },
+        {
+         "alias": "fr",
+         "role_id": "424486034097569805",
+         "emoji": "🇫🇷",
+         "isAlias": 1
+       },
+        {
+         "alias": "france",
+         "role_id": "424486034097569805",
+         "emoji": "🇫🇷",
+         "isAlias": null
+       },
+        {
+         "alias": "de",
+         "role_id": "424484443944910848",
+         "emoji": "🇩🇪",
+         "isAlias": 1
+       },
+        {
+         "alias": "germany",
+         "role_id": "424484443944910848",
+         "emoji": "🇩🇪",
+         "isAlias": null
+       },
+        {
+         "alias": "gr",
+         "role_id": "424486596176379915",
+         "emoji": "🇬🇷",
+         "isAlias": 1
+       },
+        {
+         "alias": "greece",
+         "role_id": "424486596176379915",
+         "emoji": "🇬🇷",
+         "isAlias": null
+       },
+        {
+         "alias": "hu",
+         "role_id": "424486151122845717",
+         "emoji": "🇭🇺",
+         "isAlias": 1
+       },
+        {
+         "alias": "hungary",
+         "role_id": "424486151122845717",
+         "emoji": "🇭🇺",
+         "isAlias": null
+       },
+        {
+         "alias": "ie",
+         "role_id": "424485614440939521",
+         "emoji": "🇮🇪",
+         "isAlias": 1
+       },
+        {
+         "alias": "ireland",
+         "role_id": "424485614440939521",
+         "emoji": "🇮🇪",
+         "isAlias": null
+       },
+        {
+         "alias": "italy",
+         "role_id": "424486450243829760",
+         "emoji": "🇮🇹",
+         "isAlias": null
+       },
+        {
+         "alias": "it",
+         "role_id": "424486450243829760",
+         "emoji": "🇮🇹",
+         "isAlias": 1
+       },
+        {
+         "alias": "lv",
+         "role_id": "424485415525810176",
+         "emoji": "🇱🇻",
+         "isAlias": 1
+       },
+        {
+         "alias": "latvia",
+         "role_id": "424485415525810176",
+         "emoji": "🇱🇻",
+         "isAlias": null
+       },
+        {
+         "alias": "lithuania",
+         "role_id": "424485473495547905",
+         "emoji": "🇱🇹",
+         "isAlias": null
+       },
+        {
+         "alias": "lt",
+         "role_id": "424485473495547905",
+         "emoji": "🇱🇹",
+         "isAlias": 1
+       },
+        {
+         "alias": "lu",
+         "role_id": "424485918833901579",
+         "emoji": "🇱🇺",
+         "isAlias": 1
+       },
+        {
+         "alias": "luxembourg",
+         "role_id": "424485918833901579",
+         "emoji": "🇱🇺",
+         "isAlias": null
+       },
+        {
+         "alias": "mt",
+         "role_id": "424486812933685250",
+         "emoji": "🇲🇹",
+         "isAlias": 1
+       },
+        {
+         "alias": "malta",
+         "role_id": "424486812933685250",
+         "emoji": "🇲🇹",
+         "isAlias": null
+       },
+        {
+         "alias": "nl",
+         "role_id": "424485672821325845",
+         "emoji": "🇳🇱",
+         "isAlias": 1
+       },
+        {
+         "alias": "netherlands",
+         "role_id": "424485672821325845",
+         "emoji": "🇳🇱",
+         "isAlias": null
+       },
+        {
+         "alias": "pl",
+         "role_id": "424485728404111360",
+         "emoji": "🇵🇱",
+         "isAlias": 1
+       },
+        {
+         "alias": "poland",
+         "role_id": "424485728404111360",
+         "emoji": "🇵🇱",
+         "isAlias": null
+       },
+        {
+         "alias": "sk",
+         "role_id": "424485968360243200",
+         "emoji": "🇸🇰",
+         "isAlias": 1
+       },
+        {
+         "alias": "slovakia",
+         "role_id": "424485968360243200",
+         "emoji": "🇸🇰",
+         "isAlias": null
+       },
+        {
+         "alias": "si",
+         "role_id": "424486266722058240",
+         "emoji": "🇸🇮",
+         "isAlias": 1
+       },
+        {
+         "alias": "slovenia",
+         "role_id": "424486266722058240",
+         "emoji": "🇸🇮",
+         "isAlias": null
+       },
+        {
+         "alias": "ro",
+         "role_id": "424486209830780928",
+         "emoji": "🇷🇴",
+         "isAlias": 1
+       },
+        {
+         "alias": "romania",
+         "role_id": "424486209830780928",
+         "emoji": "🇷🇴",
+         "isAlias": null
+       },
+        {
+         "alias": "es",
+         "role_id": "424486490987298816",
+         "emoji": "🇪🇸",
+         "isAlias": 1
+       },
+        {
+         "alias": "se",
+         "role_id": "424485205747695629",
+         "emoji": "🇸🇪",
+         "isAlias": 1
+       },
+        {
+         "alias": "spain",
+         "role_id": "424486490987298816",
+         "emoji": "🇪🇸",
+         "isAlias": null
+       },
+        {
+         "alias": "sweden",
+         "role_id": "424485205747695629",
+         "emoji": "🇸🇪",
+         "isAlias": null
+       },
+        {
+         "alias": "cy",
+         "role_id": "424486772039483395",
+         "emoji": "🇨🇾",
+         "isAlias": 1
+       },
+        {
+         "alias": "cyprus",
+         "role_id": "424486772039483395",
+         "emoji": "🇨🇾",
+         "isAlias": null
+       },
+        {
+         "alias": "cz",
+         "role_id": "424485846041886720",
+         "emoji": "🇨🇿",
+         "isAlias": 1
+       },
+        {
+         "alias": "czechia",
+         "role_id": "424485846041886720",
+         "emoji": "🇨🇿",
+         "isAlias": null
+       },
+        {
+         "alias": "pt",
+         "role_id": "424486356517912576",
+         "emoji": "🇵🇹",
+         "isAlias": 1
+       },
+        {
+         "alias": "portugal",
+         "role_id": "424486356517912576",
+         "emoji": "🇵🇹",
+         "isAlias": null
+       },
+        {
+         "alias": "non-eu",
+         "role_id": "820451679051841578",
+         "emoji": "🌐",
+         "isAlias": null
+       },
+        {
+         "alias": "netherlands",
+         "role_id": "648294077812703242",
+         "emoji": "🇳🇱",
+         "isAlias": null
+       }
+     ],
+   
+     "Groups": [
+        {
+         "role_id": "646723780345069579",
+         "category": "Admin",
+         "user_level": 9
+       },
+        {
+         "role_id": "740336152120131615",
+         "category": "Admin",
+         "user_level": 9
+       },
+        {
+         "role_id": "637844096479789082",
+         "category": "Admin",
+         "user_level": 9
+       },
+        {
+         "role_id": "646723780345069579",
+         "category": "Mod",
+         "user_level": 6
+       },
+        {
+         "role_id": "666277144963579925",
+         "category": "Mod",
+         "user_level": 6
+       },
+        {
+         "role_id": "836665614130085949",
+         "category": "Twitter",
+         "user_level": 0
+       },
+        {
+         "role_id": "581605959990771725",
+         "category": "News",
+         "user_level": 0
+       },
+        {
+         "role_id": "581605959990771725",
+         "category": "Calendar",
+         "user_level": 0
+       },
+        {
+         "role_id": "699355152481517568",
+         "category": "FGN",
+         "user_level": 0
+       }
+     ],
+
+     "Reactions": [
+        { "reaction": "\\*cough\\*", "category": "default" },
+        { "reaction": "\\*ahem\\*", "category": "default" },
+        { "reaction": "hrm", "category": "default" },
+        { "reaction": "tsk", "category": "default" },
+        { "reaction": "wat", "category": "default" },
+        { "reaction": "\\*sniff\\*", "category": "default" },
+        { "reaction": "heh", "category": "default" },
+        { "reaction": "hmpf", "category": "default" },
+        { "reaction": "reee", "category": "default" },
+        { "reaction": "oh you", "category": "default" },
+        { "reaction": "hah", "category": "default" },
+        { "reaction": "huh", "category": "default" },
+        { "reaction": "eh?", "category": "default" },
+        { "reaction": "grr", "category": "default" },
+        { "reaction": "anschluss bitte", "category": "default" },
+        { "reaction": "Freude", "category": "default" },
+        { "reaction": "pay debnts", "category": "default" },
+        { "reaction": "FREUDE", "category": "default" },
+        { "reaction": "uwu", "category": "default" },
+        { "reaction": "owo", "category": "default" },
+        { "reaction": "hrrrm", "category": "default" },
+        { "reaction": "pewpew", "category": "default" },
+        { "reaction": "hm?", "category": "default" },
+        { "reaction": "what now", "category": "default" },
+        { "reaction": "FREUDE!", "category": "default" },
+
+        { "reaction": "gib meme", "category": "Idlestop" },
+        { "reaction": "...", "category": "Idlestop" },
+        { "reaction": "\\*ahem\\* FREUDE", "category": "Idlestop" },
+        { "reaction": "🙏 plz clap", "category": "Idlestop" },
+        { "reaction": "EU army when :pepeEU:", "category": "Idlestop" },
+        { "reaction": "still no treaty reform? smh :euroweary:", "category": "Idlestop" },
+        { "reaction": "so quiet here, like the sound of those brexit benefits :eurolul:", "category": "Idlestop" }
+
+     ],
+
+     "Routes":[
+        {
+         "from": "838904355276062740",
+         "to": "842582680612110406",
+         "isActive": 1
+       },
+        {
+         "from": "798198541003522098",
+         "to": "842582680612110406",
+         "isActive": 1
+       },
+        {
+         "from": "277450613766356992",
+         "to": "842582680612110406",
+         "isActive": 1
+       }
+     ]
+
+}

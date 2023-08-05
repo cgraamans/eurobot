@@ -1,2 +1,2 @@
 # eurobot
-Forum Gotterfunken Eurobot
+Eurobot
