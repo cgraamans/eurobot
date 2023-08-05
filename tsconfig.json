@@ -8,7 +8,7 @@
         "resolveJsonModule": true,
         "sourceMap": true,
         "skipLibCheck":true,
-        "outDir": "dist",
+        "outDir": "Z:/www/eurobot/dist",
         "baseUrl": ".",
         "paths": {
             "*": [
