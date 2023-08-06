@@ -15,12 +15,12 @@ npm i -g typescript pm2
 npm run build
 ```
 
+Note: can run on a raspberry pi but can't be built on one
+
 ### Watch
 ```bash
 npm start
 ```
-
-Note: can run on a raspberry pi but can't be built on one
 
 ### Daemonize
 ```bash
