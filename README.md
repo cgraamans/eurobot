@@ -10,12 +10,20 @@ npm i
 npm i -g typescript pm2
 ```
 
+Must be in posession of:  
+- MySQL installed with the database imported from `./sql/init.sql`  
+- Google calendar json export  
+- Reddit API keys  
+- Twitter API keys  
+- Mastodon token  
+- Telegram token
+
 ### Build
 ```bash
 npm run build
 ```
 
-Note: can run on a raspberry pi but can't be built on one
+Note: can run on a raspberry pi but can't be built on on
 
 ### Watch
 ```bash
