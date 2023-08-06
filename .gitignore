@@ -111,4 +111,4 @@ dist
 **/cert/*
 
 # Google Calendar 
-**/conf/google/*
+**/conf/google/Eurobot-Calendar-*.json

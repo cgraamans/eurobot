@@ -93,7 +93,6 @@ module.exports = {
 
 			// Reply redirect
 			// IF reply and IF https in parent and IF mentioned channel and IF mentioned channel is forum -> copy to forum
-
 			if(message.type === MessageType.Reply) {
 
 				const parentMsg = await message.fetchReference();
@@ -109,7 +108,7 @@ module.exports = {
 					if(!channelMentioned.isTextBased()) return;
 					if(!channelMentioned.isThread()) return;
 
-					await channelMentioned.send(`By ${message.author.toString()} in ${message.channel.toString()}\n${parentMsg.content}`);
+					await channelMentioned.send(`By ${parentMsg.author.toString()} in ${message.channel.toString()}\n${parentMsg.content}`);
 
 					return;
 
