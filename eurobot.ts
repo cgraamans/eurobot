@@ -188,11 +188,9 @@ try {
                     .catch(e=>console.log(e));
     
                 if(hasDoubles.length > 0) return;
-
-                console.log(`< REDDIT [${item.url}]`);
-
+               
                 // post to articles
-                await discordModel.pushTextToDiscord("Reddit-to-Articles",`Source: /r/${newsObj.keyword}\n`+item.url);
+                await discordModel.pushTextToDiscord("Reddit-to-Articles",`${item.title}\n${item.link_flair_text?"#" + item.link_flair_text + " ":""}#${newsObj.keyword}\n`+item.url);
 
             }));
 
