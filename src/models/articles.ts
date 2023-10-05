@@ -99,64 +99,34 @@ export default class ArticleModel {
     }
 
     // Prepare tweet
-    public sanitizeTweet(message:Discord.Message) {
+    public textSlice(message:Discord.Message,limit:number = 280,linkShortened:boolean = true) {
 
         let text = message.content;
 
         // Determine Length of tweet
         const textArr = text.split(" ");
-        let textLinks = 0;
+        let textLink = "";
         let textElements:string[] = [];
         textArr.forEach(textElement=>{
             if(textElement.startsWith("https://")) {
-                textLinks++;
+                textLink = textElement;
             } else {
                 textElements.push(textElement);
             }
         });
 
-        let prodTxt = textArr.join(" ");
-        if(prodTxt.length + (textLinks * 23) > 280) {
+
+        const linkLength = linkShortened ? 23 : textLink.length;
+        let prodTxt = textElements.join(" ");
+        if(prodTxt.length + linkLength > 280) {
         
-            prodTxt = prodTxt.slice(0,(280 - (textLinks * 23) - 3)) + "...";
+            prodTxt = prodTxt.slice(0,(280 - (linkLength + 3))) + "...";
 
         }
 
-        return prodTxt;
-
-    }
-
-    public sanitizeMasto(message:Discord.Message) {
-
-        let text = message.content;
-
-        // Determine Length of tweet
-        const textArr = text.split(" ");
-        let textLinks = 0;
-        let textElements:string[] = [];
-        textArr.forEach(textElement=>{
-            if(textElement.startsWith("https://")) {
-                textLinks++;
-            } else {
-                textElements.push(textElement);
-            }
-        });
-
-        let prodTxt = textArr.join(" ");
-        if(prodTxt.length + (textLinks * 23) > 500) {
-        
-            prodTxt = prodTxt.slice(0,(500 - (textLinks * 23) - 3)) + "...";
-
-        }
+        prodTxt = prodTxt + " " + textLink;
 
         return prodTxt;
-
-    }
-
-    public async masto(text:string) {
-
-        return Mastodon.client.postStatus(text,{})
-            .catch((err:any)=>console.log(err));
 
     }
 
@@ -171,22 +141,21 @@ export default class ArticleModel {
         if(user) discordUserID = user.id;
 
         const tweetMedia = await this.tweetData(message);
-        const sanitizedTweet = this.sanitizeTweet(message);
-        const sanitizedMasto = this.sanitizeMasto(message);
+        const sanitizedTweet = this.textSlice(message);
+        const sanitizedLarge = this.textSlice(message,500,false);
 
         const post:{twitter:void|twitter.ResponseData,mastodon:any,telegram:any} = {twitter:undefined,mastodon:undefined,telegram:undefined};
 
         if(sanitizedTweet) {
             post.twitter = await Twitter.post(sanitizedTweet,tweetMedia).catch(e=>console.log(e));
         }
-        if(sanitizedMasto) {
-            post.mastodon = await this.masto(sanitizedMasto).catch(e=>console.log(e));
+        if(sanitizedLarge) {
+            post.mastodon = await Mastodon.client.postStatus(sanitizedLarge,{})
+            .catch((err:any)=>console.log(err));
         }
-        if(sanitizedMasto){
+        if(sanitizedLarge){
             post.telegram = await Telegram.client.sendMessage("@euintnews",sanitizedTweet).catch(e=>console.log(e));
         }
-
-        // console.log("> BROADCAST",post);
 
         return post;
 

@@ -190,7 +190,7 @@ try {
                 if(hasDoubles.length > 0) return;
                
                 // post to articles
-                await discordModel.pushTextToDiscord("Reddit-to-Articles",`${item.title}\n${item.link_flair_text?"#" + item.link_flair_text + " ":""}#${newsObj.keyword}\n`+item.url);
+                await discordModel.pushTextToDiscord("Reddit-to-Articles",`${item.title}\n${item.link_flair_text?"#" + item.link_flair_text + " ":""}#${newsObj.keyword} \n`+item.url);
 
             }));
 
