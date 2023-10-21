@@ -91,30 +91,46 @@ module.exports = {
 
 			}
 
+			//Twitter fixes
+			//
+			// Regex:
+			// https:\/\/(www\.)?((twitter)|(x))(\.com)\/\w*\/status\/[0-9]*
+			// (twitter|x)(\.com)
+			if(message.content.match(/https:\/\/(www\.)?((twitter)|(x))(\.com)\/\w*\/status\/[0-9]*/gm)) {
+
+				const cleaned = message.content.replace(/(twitter|x)(\.com)/gm,"fxtwitter.com");
+				await message.reply({content:cleaned,flags:[4096]});
+				return;
+
+			}
+
 			// Reply redirect
 			// IF reply and IF https in parent and IF mentioned channel and IF mentioned channel is forum -> copy to forum
 			if(message.type === MessageType.Reply) {
 
-				const parentMsg = await message.fetchReference();
-				
-				const hasRole = message.member.roles.cache.some(role => ['Admin','Moderator','Trusted','Eurobot','Sponsor','Booster'].includes(role.name));
-				if(!hasRole) return;
-				
-				if(!parentMsg.content.includes("https://")) return;
-				
-				message.mentions.channels.each(async channelMentioned=>{
+				if(message.mentions.channels.size > 0) {
 
-					await channelMentioned.fetch();
-					if(!channelMentioned.isTextBased()) return;
-					if(!channelMentioned.isThread()) return;
+					const parentMsg = await message.fetchReference();
+					if(!parentMsg.content.includes("https://")) return;
 
-					await channelMentioned.send(`By ${parentMsg.author.toString()} in ${message.channel.toString()}\n${parentMsg.content}`);
+					const hasRole = message.member.roles.cache.some(role => ['Admin','Moderator','Trusted','Eurobot','Sponsor','Booster'].includes(role.name));
+					if(!hasRole) return;
 
+					message.mentions.channels.each(async channelMentioned=>{
+	
+						await channelMentioned.fetch();
+						if(!channelMentioned.isTextBased()) return;
+						if(!channelMentioned.isThread()) return;
+	
+						await channelMentioned.send(`By ${parentMsg.author.toString()} in ${message.channel.toString()}\n${parentMsg.content}`);
+	
+						return;
+
+					});
+	
 					return;
-
-				});
-
-				return;
+	
+				}
 
 			}
 

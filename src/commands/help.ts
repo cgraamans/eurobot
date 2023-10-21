@@ -38,9 +38,6 @@ Eurobot functions as the provider and publication of news and information for Fo
 	/country - list countries
 	/country <country name> - add/remove country.
 
-	/xp - Get your xp total
-	/rank - top 10 xp rankings
-
 \`\`\`
 
 **Functions**:

@@ -103,28 +103,27 @@ export default class ArticleModel {
 
         let text = message.content;
 
+        text = text.replace("\n"," ");
         // Determine Length of tweet
         const textArr = text.split(" ");
         let textLink = "";
         let textElements:string[] = [];
         textArr.forEach(textElement=>{
-            if(textElement.startsWith("https://")) {
+            if(textElement.includes("https://")) {
                 textLink = textElement;
             } else {
                 textElements.push(textElement);
             }
         });
 
-
-        const linkLength = linkShortened ? 23 : textLink.length;
         let prodTxt = textElements.join(" ");
-        if(prodTxt.length + linkLength > 280) {
+        if(prodTxt.length + textLink.length > 280) {
         
-            prodTxt = prodTxt.slice(0,(280 - (linkLength + 3))) + "...";
+            prodTxt = prodTxt.slice(0,(280 - (textLink.length + 3))) + "...";
 
         }
 
-        prodTxt = prodTxt + " " + textLink;
+        prodTxt = prodTxt + "\n" + textLink;
 
         return prodTxt;
 
