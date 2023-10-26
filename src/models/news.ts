@@ -2,7 +2,6 @@ import db from "../services/db";
 import Discord from "discord.js";
 import reddit from "../services/reddit";
 import {Eurobot} from "../../types/index.d"
-// import reddit from '../../../../workers/src/lib/models';
 
 export default class NewsModel {
 

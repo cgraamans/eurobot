@@ -4,7 +4,6 @@ import ArticleModel from "../models/articles";
 import DiscordModel from "../models/discord";
 import Tools from '../tools';
 import {Eurobot} from "../../types/index.d";
-import xp from "../models/xp";
 import db from "../services/db";
 
 module.exports = {
@@ -90,6 +89,59 @@ module.exports = {
 				return;
 
 			}
+
+			//Warnlist
+			if(message.content.includes('https://')) {
+
+				let type = "url"
+				let root = "";
+				let splitIndex = 2;
+
+				let splitMsg = message.content.split(" ");
+				splitMsg.forEach(s=>{
+
+					if(s.startsWith("https://")){
+
+						const twitterMatch = s.match(/^https:\/\/(www\.)?((twitter)|(fxtwitter)|(vxtwitter)|(fixupx)|(x))(\.com)\/\w*\/status\/[0-9]*/gm);
+						if(twitterMatch) {
+							type = "twitter";
+							splitIndex = 3;
+						}
+
+						root = s.split('/')[splitIndex];
+
+						if(root.startsWith("www.") && splitIndex === 2) {
+							const rootD = root.split(".");
+							rootD.splice(0,1);
+							root = rootD.join(".");
+						}
+
+					}
+
+				});
+				const hasBlock = await db.q("SELECT rl, reason FROM url_warnlist WHERE type = ? AND rl = ?",[type,root]).catch(e=>console.log(e));
+				if(hasBlock && hasBlock.length > 0) {
+
+					let blockText = `${type==="twitter"?"@":""}${root} has been flagged as being an unreliable source of information. Please find alternate sources.`;
+
+					if(hasBlock[0].reason) {
+						blockText = hasBlock[0].reason;
+					}
+
+					await message.reply({embeds:[{
+						title:"WARNING",
+						description:blockText,
+						color:15105570
+					}]});
+
+					// await message.delete();
+
+					return;
+
+				}
+
+			}
+
 
 			//Twitter fixes
 			//
