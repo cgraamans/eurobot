@@ -94,7 +94,7 @@ module.exports = {
 			if(message.content.includes('https://')) {
 
 				let type = "url"
-				let root = "";
+				let root;
 				let splitIndex = 2;
 
 				let splitMsg = message.content.split(" ");
@@ -108,6 +108,12 @@ module.exports = {
 							splitIndex = 3;
 						}
 
+						// TODO
+						const telegramMatch = s.match(/^https:\/\/(www\.)?(t\.me)\/\w*\/[0-9]*/gm);
+						if(telegramMatch) {
+							type = "telegram";
+						}
+
 						root = s.split('/')[splitIndex];
 
 						if(root.startsWith("www.") && splitIndex === 2) {
@@ -119,24 +125,28 @@ module.exports = {
 					}
 
 				});
-				const hasBlock = await db.q("SELECT rl, reason FROM url_warnlist WHERE type = ? AND rl = ?",[type,root]).catch(e=>console.log(e));
-				if(hasBlock && hasBlock.length > 0) {
+				if(root) {
 
-					let blockText = `${type==="twitter"?"@":""}${root} has been flagged as being an unreliable source of information. Please find alternate sources.`;
+					const hasBlock = await db.q("SELECT rl, reason FROM url_warnlist WHERE type = ? AND rl = ?",[type,root]).catch(e=>console.log(e));
+					if(hasBlock && hasBlock.length > 0) {
+	
+						let blockText = `${type==="twitter"?"@":""}${root} has been flagged as being an unreliable source of information. Please find alternate sources.`;
+	
+						if(hasBlock[0].reason) {
+							blockText = hasBlock[0].reason;
+						}
+	
+						await message.reply({embeds:[{
+							title:"WARNING",
+							description:blockText,
+							color:15105570
+						}]});
+	
+						// await message.delete();
+	
+						return;
 
-					if(hasBlock[0].reason) {
-						blockText = hasBlock[0].reason;
 					}
-
-					await message.reply({embeds:[{
-						title:"WARNING",
-						description:blockText,
-						color:15105570
-					}]});
-
-					// await message.delete();
-
-					return;
 
 				}
 

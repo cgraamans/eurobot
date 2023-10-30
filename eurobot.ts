@@ -60,8 +60,6 @@ Discord.Client.on("interactionCreate", async (interaction)=>{
 
     if (!interaction.isCommand()) return;
 
-    console.log(`${interaction.commandName} by ${interaction.user.username}`);
-
     const command = Discord.Client.commands.get(interaction.commandName);
 
     if (!command) return;
@@ -70,7 +68,7 @@ Discord.Client.on("interactionCreate", async (interaction)=>{
         await command.execute(interaction);
     } catch (error) {
         console.error(`>> ${interaction.commandName} by ${interaction.user.username}`,error,`\n`);
-        await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+        await interaction.reply({ content: 'Eurobot errored while executing this command!', ephemeral: true });
     }
 
 });
@@ -170,7 +168,6 @@ try {
         const subreddits = ['EUNews','EuropeanArmy','EuropeanUnion','EUSpace','EUTech','EuropeanFederalists','EuropeanCulture'];
 
         newsObj.keyword = subreddits[Math.floor(Math.random()*subreddits.length)];
-		console.log(`JOB ARTICLES: ${newsObj.keyword}`);
         
         // get news
 		newsObj = await newsModel.get(newsObj);

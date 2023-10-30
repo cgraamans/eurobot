@@ -10,7 +10,7 @@ const data = new SlashCommandBuilder()
 
 data.addStringOption((option:SlashCommandStringOption)=>{
 	option.setName('type')
-		.setDescription('twitter or url')
+		.setDescription('twitter, telegram or url')
 		.setRequired(true);
 	return option;
 });
@@ -42,6 +42,8 @@ module.exports = {
 		embed.setColor(0x001489);
 
 		const stringOptionType = interaction.options.getString('type');
+		if(!['url','twitter','telegram'].includes(stringOptionType)) return;
+
 		const stringOptionRL = interaction.options.getString('rl');
 
 		let stringOptionReason = interaction.options.getString('reason');
