@@ -1,7 +1,5 @@
-import { SlashCommandBuilder, SlashCommandStringOption, } from "@discordjs/builders";
+import { SlashCommandBuilder, SlashCommandStringOption} from "@discordjs/builders";
 import { EmbedBuilder, CommandInteraction, Role, TextChannel,PermissionFlagsBits } from "discord.js";
-import discord from "../../services/discord";
-import {Eurobot} from "../../../types/index";
 import db from "../../services/db";
 
 const data = new SlashCommandBuilder()
@@ -11,7 +9,24 @@ const data = new SlashCommandBuilder()
 data.addStringOption((option:SlashCommandStringOption)=>{
 	option.setName('type')
 		.setDescription('twitter, telegram or url')
-		.setRequired(true);
+		.setRequired(true)
+		.addChoices({
+			name:'twitter',
+			value:'twitter'
+		},
+		{
+			name:"telegram",
+			value:"telegram"
+		},
+		{
+			name:"url",
+			value:"url",
+		},
+		{	
+			name:"youtube",
+			value:"youtube"
+		},
+		);
 	return option;
 });
 
@@ -42,8 +57,6 @@ module.exports = {
 		embed.setColor(0x001489);
 
 		const stringOptionType = interaction.options.getString('type');
-		if(!['url','twitter','telegram'].includes(stringOptionType)) return;
-
 		const stringOptionRL = interaction.options.getString('rl');
 
 		let stringOptionReason = interaction.options.getString('reason');

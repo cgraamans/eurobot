@@ -109,14 +109,21 @@ module.exports = {
 						}
 
 						// TODO
-						const telegramMatch = s.match(/^https:\/\/(www\.)?(t\.me)\/\w*\/[0-9]*/gm);
-						if(telegramMatch) {
-							type = "telegram";
-						}
+						// const telegramMatch = s.match(/^https:\/\/(www\.)?(t\.me)\/\w*\/[0-9]*/gm);
+						// if(telegramMatch) {
+						// 	type = "telegram";
+						// }
+
+						// const youtubeMatch = s.match(/^https:\/\/(www\.)?(youtube)(\.com)\/[a-z0-9]*/gm);
+						// if(youtubeMatch) {
+						// 	type = "youtube";
+						// 	setTimeout(()=>{},1000);
+						// 	message.embeds
+						// }
 
 						root = s.split('/')[splitIndex];
 
-						if(root.startsWith("www.") && splitIndex === 2) {
+						if(root.startsWith("www.") && type === "url") {
 							const rootD = root.split(".");
 							rootD.splice(0,1);
 							root = rootD.join(".");
@@ -157,11 +164,12 @@ module.exports = {
 			//
 			// Regex:
 			// https:\/\/(www\.)?((twitter)|(x))(\.com)\/\w*\/status\/[0-9]*
-			// (twitter|x)(\.com)
 			if(message.content.match(/https:\/\/(www\.)?((twitter)|(x))(\.com)\/\w*\/status\/[0-9]*/gm)) {
 
-				const cleaned = message.content.replace(/(twitter|x)(\.com)/gm,"fxtwitter.com");
-				await message.reply({content:cleaned,flags:[4096]});
+				const cleaned = message.content.replace(/(twitter|x)(\.com)/gm,"vxtwitter.com");
+				await message.channel.send({content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,flags:[4096]});
+				await message.delete();
+
 				return;
 
 			}
@@ -184,7 +192,12 @@ module.exports = {
 						if(!channelMentioned.isTextBased()) return;
 						if(!channelMentioned.isThread()) return;
 	
-						await channelMentioned.send(`By ${parentMsg.author.toString()} in ${message.channel.toString()}\n${parentMsg.content}`);
+						let channelMentionSend = parentMsg.content;
+						if(parentMsg.author.id !== discord.Client.user.id) {
+							channelMentionSend = `By ${parentMsg.author.toString()} in ${message.channel.toString()}\n${parentMsg.content}`;
+						}
+
+						await channelMentioned.send(channelMentionSend);
 	
 						return;
 

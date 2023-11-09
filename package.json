@@ -1,6 +1,6 @@
 {
   "name": "eurobot",
-  "version": "15.0.2",
+  "version": "15.0.3",
   "description": "eurobot using discord.js v14",
   "main": "eurobot.js",
   "scripts": {
