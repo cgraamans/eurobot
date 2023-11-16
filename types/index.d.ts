@@ -32,7 +32,18 @@ export namespace Eurobot {
             toggle_role?:Role
     
         }
+
+        export interface EPGroup {
+            name:string,
+            role_id:string,
+            emoji:string,
+            isAlias:number|null,
+            description:string,            
+            toggle_result?:number,
+            toggle_role?:Role
     
+        }
+
         export interface User {
             role_id:string,
             category:string,

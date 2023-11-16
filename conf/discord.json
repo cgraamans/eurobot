@@ -18,16 +18,9 @@
          "category": "Ignore"
       },
       {
-         "channel_id": "817966137782173716",
-         "category": "Twitter"
-      },
-      {
         "channel_id": "609511947762925597",
-        "category": "Twitter"
-      },
-      {
-         "channel_id": "1026223849987125288",
-         "category": "Twitter"
+        "category": "Twitter",
+        "NOTE":"#news"
       },
       {
          "channel_id": "257838262943481857",
@@ -452,6 +445,116 @@
          "category": "FGN",
          "user_level": 0
        }
+     ],
+
+     "EPGroups": [
+      
+      {
+        "role_id":"1174135969851641856",
+        "name":"RE",
+        "isAlias":0,
+        "emoji":"🟡",
+        "description":"Renew Europe"
+      },
+      {
+        "role_id":"1174135969851641856",
+        "name":"Renew",
+        "isAlias":1,
+        "emoji":"🟡",
+        "description":"Renew Europe"
+      },
+      {
+        "role_id":"1174134927932006551",
+        "name":"S&D",
+        "isAlias":0,
+        "emoji":"🟠",
+        "description":"Socialists and Democrats"
+      },
+      {
+        "role_id":"1174134927932006551",
+        "name":"Socdems",
+        "isAlias":1,
+        "emoji":"🟠",
+        "description":"Socialists and Democrats"
+      },
+      {
+        "role_id":"1174134927932006551",
+        "name":"SD",
+        "isAlias":1,
+        "emoji":"🟠",
+        "description":"Renew Europe"
+      },
+      {
+        "role_id":"1174135039622135839",
+        "name":"ECR",
+        "isAlias":0,
+        "emoji":"🟣",
+        "description":"European Conservatives and Reformists"
+      },
+      {
+        "role_id":"1174134702895005736",
+        "name":"EPP",
+        "isAlias":0,
+        "emoji":"🔵",
+        "description":"European People's Party"
+      },
+      {
+        "role_id":"1174135609359609916",
+        "name":"GUE/NGL",
+        "isAlias":0,
+        "emoji":"🔴",
+        "description":"Gauche Unitaire Européenne/Nordic Green Left"
+      },
+      {
+        "role_id":"1174135609359609916",
+        "name":"GUE",
+        "isAlias":1,
+        "emoji":"🔴",
+        "description":"Gauche Unitaire Européenne/Nordic Green Left"
+      },
+      {
+        "role_id":"1174135609359609916",
+        "name":"NGL",
+        "isAlias":1,
+        "emoji":"🔴",
+        "description":"Gauche Unitaire Européenne/Nordic Green Left"
+      },
+      {
+        "role_id":"1174135123596300409",
+        "name":"GREENS/EFA",
+        "isAlias":0,
+        "emoji":"🟢",
+        "description":"Greens/European Free Alliance"
+      },
+      {
+        "role_id":"1174135123596300409",
+        "name":"Greens",
+        "isAlias":1,
+        "emoji":"🟢",
+        "description":"Greens/European Free Alliance"
+      },
+      {
+        "role_id":"1174135123596300409",
+        "name":"EFA",
+        "isAlias":1,
+        "emoji":"🟢",
+        "description":"Greens/European Free Alliance"
+      },
+      {
+        "role_id":"1174135784010428550",
+        "name":"I&D",
+        "isAlias":0,
+        "emoji":"🟤",
+        "description":"Identity & Democracy"
+      },
+      {
+        "role_id":"1174135784010428550",
+        "name":"ID",
+        "isAlias":1,
+        "emoji":"🟤",
+        "description":"Identity & Democracy"
+      }
+      
      ],
 
      "Reactions": [
