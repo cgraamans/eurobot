@@ -4,7 +4,7 @@ import discord from "../../services/discord";
 import {Eurobot} from "../../../types/index";
 
 const data = new SlashCommandBuilder()
-	.setName('EUGroup')
+	.setName('eugroup')
 	.setDescription('Choose your European Political Group');
 
 data.addStringOption((option:SlashCommandStringOption)=>{

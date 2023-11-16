@@ -1,5 +1,3 @@
-import {Eurobot} from "../../types/index.d"
-import * as https from "https";
 import fetch from "node-fetch"
 
 export default class WeatherModel {
@@ -10,8 +8,8 @@ export default class WeatherModel {
 
         try {
 
-            const response = await fetch(`https://wttr.in/${area}?format="%l:+%C+%c+%t\n"`);
-            if(response.status !== 200) return;
+            const response = await fetch(`https://wttr.in/${area}?format=%l:+%C+%c+%t`);
+            if(!response.ok) return;
 
             return response.text();
 
