@@ -1,15 +1,14 @@
 import fetch from "node-fetch";
-
-import Discord from "discord.js";
 import * as FileType from "file-type"
 import * as https from "https";
 
-import Twitter from "../services/twitter";
+import Discord from "discord.js";
 import twitter from "twitter";
 
+import Twitter from "../services/twitter";
 import Telegram from "../services/telegram";
-
 import Mastodon from "../services/mastodon";
+import BlueSky from "../services/bsky";
 
 import Tools from '../tools';
 import {Eurobot} from "../../types/index";
@@ -143,7 +142,10 @@ export default class ArticleModel {
         const sanitizedTweet = this.textSlice(message);
         const sanitizedLarge = this.textSlice(message,500,false);
 
-        const post:{twitter:void|twitter.ResponseData,mastodon:any,telegram:any} = {twitter:undefined,mastodon:undefined,telegram:undefined};
+        const post:{twitter:void|twitter.ResponseData,mastodon:any,telegram:any,bluesky:void|{
+            uri: string;
+            cid: string;
+        }} = {twitter:undefined,mastodon:undefined,telegram:undefined,bluesky:undefined};
 
         if(sanitizedTweet) {
             post.twitter = await Twitter.post(sanitizedTweet,tweetMedia).catch(e=>console.log(e));
@@ -152,8 +154,11 @@ export default class ArticleModel {
             post.mastodon = await Mastodon.client.postStatus(sanitizedLarge,{})
             .catch((err:any)=>console.log(err));
         }
-        if(sanitizedLarge){
+        if(sanitizedLarge) {
             post.telegram = await Telegram.client.sendMessage("@euintnews",sanitizedTweet).catch(e=>console.log(e));
+        }
+        if(sanitizedLarge) {
+            post.bluesky = await BlueSky.send(sanitizedLarge);
         }
 
         return post;

@@ -138,7 +138,9 @@ try {
 
     // CALENDAR JOB MORNING
     jobs.push(schedule.scheduleJob(`0 7 * * *`, async function(){
-    
+
+        console.log(`> JOB:Calendar (Morning)`);
+
 		const span:Eurobot.Calendar.Span = calendarModel.textToUnixTimeRange("today");
 		const items = await google.Calendar(span.range).catch(e=>{console.log(e)});
         if(!items || items.length < 1) return;
@@ -163,6 +165,8 @@ try {
     // CALENDAR JOB EVENING
     jobs.push(schedule.scheduleJob(`0 19 * * *`, async function(){
     
+        console.log(`> JOB:Calendar (Evening)`);
+
 		const span:Eurobot.Calendar.Span = calendarModel.textToUnixTimeRange("tomorrow");
 		const items = await google.Calendar(span.range).catch(e=>{console.log(e)});
         if(!items || items.length < 1) return;
@@ -185,13 +189,15 @@ try {
     // News JOB
     jobs.push(schedule.scheduleJob(`0 */4 * * *`, async function(){
         
-        const newsModel = new NewsModel(3);
-
         let newsObj:Eurobot.News.Obj = {keyword:"eunews"};
 
         const subreddits = ['eunews','europeanarmy','europeanfederalists','europeanculture','europeanunion','euspace','eutech'];
         newsObj.keyword = subreddits[Math.floor(Math.random()*subreddits.length)];
+        
+        console.log(`> JOB:News (${newsObj.keyword})`);
 
+        // get news
+        const newsModel = new NewsModel(3);
 		const keywordObjRow = await newsModel.getKeywordObjRow(newsObj.keyword);
         if(!keywordObjRow) return;
         
@@ -219,15 +225,16 @@ try {
     // News to articles job
     jobs.push(schedule.scheduleJob(`*/2 * * * *`, async function(){
 
-        const newsModel = new NewsModel(10);
-
-        let newsObj:Eurobot.News.Obj = {keyword:"eunews"};
+        let newsObj:Eurobot.News.Obj = {keyword:"EUNews"};
         const subreddits = ['EUNews','EuropeanArmy','EuropeanUnion','EUSpace','EUTech','EuropeanFederalists','EuropeanCulture'];
 
         newsObj.keyword = subreddits[Math.floor(Math.random()*subreddits.length)];
-        
+        console.log(`> JOB:News-To-Articles (${newsObj.keyword})`);
+
         // get news
-		newsObj = await newsModel.get(newsObj);
+        const newsModel = new NewsModel(10);
+
+        newsObj = await newsModel.get(newsObj);
         if(!newsObj) return;
         if((newsObj.subreddit &&newsObj.subreddit.length > 0) || (newsObj.twitter && newsObj.twitter.length > 0)) {    
 
