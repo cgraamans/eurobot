@@ -49,6 +49,9 @@ Since this is an EU server, EU countries are represented with roles. Non-EU citi
 	/news - get hot subreddit news
 	/latest - latest subreddit news
 	/calendar - list calendar entries
+	/weather <city> - get weather of city
+	/alerts - subscribe to alerts
+
 \`\`\`
 
 **Functions**:

@@ -1,11 +1,10 @@
-import Tools from '../tools';
 import { BskyAgent, RichText } from "@atproto/api";
 
 export class BlueSky {
 
     private static instance:BlueSky;
 
-    private blueskyPassword = process.env.EUROBOT_BSKY_PASSWORD;
+    public blueskyPassword:string;
 
     // Service Instance Initialization
     static getInstance() {
@@ -17,11 +16,13 @@ export class BlueSky {
 
     }
 
-    constructor() {}
+    constructor() {
+
+      this.blueskyPassword = process.env.EUROBOT_BLUESKY_KEY;
+
+    }
 
     public async send(text:string) {
-
-      console.log(this.blueskyPassword)
                 
         const agent = new BskyAgent({ service: "https://bsky.social" });
         await agent.login({
@@ -31,8 +32,10 @@ export class BlueSky {
         const richText = new RichText({ text });
         await richText.detectFacets(agent);
         return agent.post({
+          $type: "app.bsky.feed.post",
           text: richText.text,
           facets: richText.facets,
+          createdAt: new Date().toISOString(),
         });
 
     }
