@@ -13,7 +13,9 @@ export class reddit {
             userAgent: 'Eurobot',
             clientId: process.env.EUROBOT_REDDIT_CLIENT_ID,
             clientSecret: process.env.EUROBOT_REDDIT_CLIENT_SECRET,
-            refreshToken: process.env.EUROBOT_REDDIT_REFRESHTOKEN
+            // refreshToken: process.env.EUROBOT_REDDIT_REFRESHTOKEN
+            username: process.env.EUROBOT_REDDIT_USER,
+            password: process.env.EUROBOT_REDDIT_PASSWORD
         });
 
     }
