@@ -3,36 +3,30 @@ import { EmbedBuilder, CommandInteraction, Role, TextChannel,PermissionFlagsBits
 import db from "../../services/db";
 
 const data = new SlashCommandBuilder()
-	.setName('blacklist')
-	.setDescription('blacklist a twitter user or a url');
+	.setName('warnlist')
+	.setDescription('warnlist a @twitter username or a url');
 
 data.addStringOption((option:SlashCommandStringOption)=>{
-	option.setName('type')
-		.setDescription('twitter, telegram or url')
+
+	option.setName('dir')
+		.setDescription('add/subtract')
 		.setRequired(true)
 		.addChoices({
-			name:'twitter',
-			value:'twitter'
-		},
-		{
-			name:"telegram",
-			value:"telegram"
-		},
-		{
-			name:"url",
-			value:"url",
-		},
-		{	
-			name:"youtube",
-			value:"youtube"
-		},
-		);
+			name:'add',
+			value:'add'
+		})
+		.addChoices({
+			name:'remove',
+			value:'remove'
+		});
+
 	return option;
+
 });
 
 data.addStringOption((option:SlashCommandStringOption)=>{
 	option.setName('rl')
-		.setDescription('the name or url to blacklist')
+		.setDescription('@twitterUser/link')
 		.setRequired(true);
 	return option;
 });
@@ -42,7 +36,6 @@ data.addStringOption((option:SlashCommandStringOption)=>{
 		.setDescription('Reason to blacklist')
 	return option;
 });
-
 
 data.setDefaultMemberPermissions(PermissionFlagsBits.BanMembers);
 
@@ -56,8 +49,8 @@ module.exports = {
 		const embed = new EmbedBuilder();
 		embed.setColor(0x001489);
 
-		const stringOptionType = interaction.options.getString('type');
-		const stringOptionRL = interaction.options.getString('rl');
+		const stringOptionDirection = interaction.options.getString('dir');
+		let stringOptionRL = interaction.options.getString('rl');
 
 		let stringOptionReason = interaction.options.getString('reason');
 		let reasonText =  ` with reason:\n${stringOptionReason}`
@@ -66,9 +59,24 @@ module.exports = {
 			reasonText = "";			
 		}
 
-		await db.q("REPLACE INTO url_warnlist VALUES(?,?,?)",[stringOptionRL,stringOptionType,stringOptionReason]).catch(e=>console.log(e));
+		let type = 'url';
 
-		embed.setDescription(`Added ${stringOptionRL} (${stringOptionType}) to warning list${reasonText}`);
+		if(stringOptionRL.startsWith('@')) {
+			type = 'twitter';
+			stringOptionRL = stringOptionRL.substring(1);
+		}
+
+		let direction = 'Added';
+		let dir = 1;
+		if(stringOptionDirection ==='remove') {
+			
+			direction = 'Removed';
+			dir = 0;
+		}
+
+		await db.q("REPLACE INTO interaction_warnlist(`rl`,`type`,`reason`,`user`,`active`) VALUES(?,?,?,?,?)",[stringOptionRL,type,stringOptionReason,interaction.user.displayName,dir]).catch(e=>console.log(e));
+
+		embed.setDescription(`Blacklist: ${direction} ${stringOptionRL} (${type}) ${reasonText}`);
 
 		await interaction.reply({embeds:[embed],ephemeral:true});
 

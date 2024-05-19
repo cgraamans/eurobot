@@ -4,8 +4,8 @@ import discord from "../../services/discord";
 import {Eurobot} from "../../../types/index";
 
 const data = new SlashCommandBuilder()
-	.setName('eugroup')
-	.setDescription('Choose your European Political Group');
+	.setName('group')
+	.setDescription('Choose your European Parliamentary Group role');
 
 data.addStringOption((option:SlashCommandStringOption)=>{
 	option.setName('group')
@@ -56,7 +56,7 @@ module.exports = {
 		// NOT FOUND
 		if(groupObjs.length < 1) {
 
-			embed.setDescription(`EU Group not found. Type /EUGroup to see them all.`);
+			embed.setDescription(`EU Group not found. Type /group to see them all.`);
 
 			await interaction.reply({embeds:[embed],ephemeral:true});
 

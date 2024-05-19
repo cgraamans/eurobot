@@ -24,46 +24,20 @@ const discordModel = new DiscordModel();
 
 console.log(`APP [${new Date()}] @ ${__dirname}`);
 
-const welcomeMessage = `
-**About Forum Gotterfunken**
+const welcomeMessage = `Welcome to Forum Gotterfunken.
 
-Forum Gotterfunken is an EU-OSINT Server on Discord. EU-OSINT stands for \`European Union - Open Source Intelligence\`. We aim to provide up to date news and information regarding events in and around the EU from a European Perspective.
 
-For serious EU and geopolitical news visit the "Serious Effort" category channels like #serious-effort and #geopolitics.
-
-Please read the #about-us and adhere to the #rules, say hello in #introduce-yourself and come hang out in #general. You can read more about us here: https://discord.com/servers/forum-gotterfunken-257838262943481857
-
-You can support us at https://ko-fi.com/gotterfunken and get special perks!
-
-**About this bot**
-
-Eurobot is our AI Bot. He can provide you with a number of roles and functions. use \`/help\` for more information. Use the commands below to assign roles and register.
-
-Commands:
-\`\`\`
-
-    /register - register as an active user
-
-	/country - list countries
-	/country <country name> - add/remove country role (and register as an active user).
-
-	/EUGroup - list European Parliamentary group roles
-	/EUGroup <parliamentary group name> - add/remove group role (and register as an active user)
-
-    /news - get hot subreddit news
-	/latest - latest subreddit news
-	/calendar - list calendar entries
 
 \`\`\`
+Forum Gotterfunken is an EU-OSINT Server on Discord. EU-OSINT stands for European Union - Open Source Intelligence. We aim to provide up to date news and information regarding events in and around the EU from a European Perspective.
 
-Note: 
-Since this is an EU server, EU countries are represented with roles. Non-EU citizens are of course welcome and can join an European Parliamentary Group or add the non-eu country role.
+Please read the #introduction and adhere to the #rules, say hello in #introduce-yourself, visit the serious-effort channels for news and information and come hang out in #general-effort for a casual chat. 
+\`\`\`
 
-**And finally...**
+- type \`/help\` for more information  
+- type \`/roles\` to view avaiable roles and functions.
 
-Trusted users, Users who boost the server and users who contribute to our ko.fi account (https://ko-fi.com/gotterfunken) get to join our secret society!
-
-Come hang with us in #general and discuss today's EU events!
+Be nice and remember the human.
 
 Kindest regards, 
 the Mod Team`;

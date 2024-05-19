@@ -47,7 +47,7 @@ module.exports = {
 			.setColor(0x001489)
 			.setFooter({text:'You can find our calendar here: https://bit.ly/30uIhtL'});
 
-		interaction.reply({embeds:[embed]});
+		interaction.reply({embeds:[embed],ephemeral:true});
 
 		return;
 

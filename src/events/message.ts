@@ -90,51 +90,55 @@ module.exports = {
 
 			}
 
-			//Warnlist
+			// INTERACTION: WARNLIST AND LOCKCHANNEL
 			if(message.content.includes('https://')) {
+
+
+				// LOCKCHANNEL
+				//
+
+
+
+				// WARNLIST
+				//
 
 				let type = "url"
 				let root;
 				let splitIndex = 2;
-
+				let toProcess:string[] = [];
+				
 				let splitMsg = message.content.split(" ");
 				splitMsg.forEach(s=>{
 
 					if(s.startsWith("https://")){
 
-						const twitterMatch = s.match(/^https:\/\/(www\.)?((twitter)|(fxtwitter)|(vxtwitter)|(fixupx)|(x))(\.com)\/\w*\/status\/[0-9]*/gm);
-						if(twitterMatch) {
-							type = "twitter";
-							splitIndex = 3;
-						}
-
-						// TODO
-						// const telegramMatch = s.match(/^https:\/\/(www\.)?(t\.me)\/\w*\/[0-9]*/gm);
-						// if(telegramMatch) {
-						// 	type = "telegram";
-						// }
-
-						// const youtubeMatch = s.match(/^https:\/\/(www\.)?(youtube)(\.com)\/[a-z0-9]*/gm);
-						// if(youtubeMatch) {
-						// 	type = "youtube";
-						// 	setTimeout(()=>{},1000);
-						// 	message.embeds
-						// }
-
-						root = s.split('/')[splitIndex];
-
-						if(root.startsWith("www.") && type === "url") {
-							const rootD = root.split(".");
-							rootD.splice(0,1);
-							root = rootD.join(".");
-						}
+						toProcess.push(s);
 
 					}
 
 				});
+
+				toProcess.forEach(linkString=>{
+
+					const twitterMatch = linkString.match(/^https:\/\/(www\.)?((twitter)|(fxtwitter)|(vxtwitter)|(fixupx)|(x))(\.com)\/\w*\/status\/[0-9]*/gm);
+					if(twitterMatch) {
+						type = "twitter";
+						splitIndex = 3;
+					}
+
+					root = linkString.split('/')[splitIndex];
+
+					if(root.startsWith("www.") && type === "url") {
+						const rootD = root.split(".");
+						rootD.splice(0,1);
+						root = rootD.join(".");
+					}
+
+				});
+
 				if(root) {
 
-					const hasBlock = await db.q("SELECT rl, reason FROM url_warnlist WHERE type = ? AND rl = ?",[type,root]).catch(e=>console.log(e));
+					const hasBlock = await db.q("SELECT rl, reason FROM interaction_warnlist WHERE type = ? AND rl = ? AND ACTIVE = 1",[type,root]).catch(e=>console.log(e));
 					if(hasBlock && hasBlock.length > 0) {
 	
 						let blockText = `${type==="twitter"?"@":""}${root} has been flagged as being an unreliable source of information. Please find alternate sources.`;
@@ -164,14 +168,12 @@ module.exports = {
 			//
 			// Regex:
 			// https:\/\/(www\.)?((twitter)|(x))(\.com)\/\w*\/status\/[0-9]*
-			if(message.content.match(/https:\/\/(www\.)?((twitter)|(x))(\.com)\/\w*\/status\/[0-9]*/gm)) {
 
-				const cleaned = message.content.replace(/(twitter|x)(\.com)/gm,"vxtwitter.com");
+			if(message.content.match(/https:\/\/(www\.)?((twitter)|(x))(\.com)\/\w*\/status\/[0-9]*/gm)) {
+				const cleaned = message.content.replace(/(twitter|x)(\.com)/gm,"fxtwitter.com");
 				await message.channel.send({content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,flags:[4096]});
 				await message.delete();
-
 				return;
-
 			}
 
 			// Reply redirect
@@ -190,7 +192,7 @@ module.exports = {
 	
 						await channelMentioned.fetch();
 						if(!channelMentioned.isTextBased()) return;
-						if(!channelMentioned.isThread()) return;
+						// if(!channelMentioned.isThread()) return;
 	
 						let channelMentionSend = parentMsg.content;
 						if(parentMsg.author.id !== discord.Client.user.id) {
@@ -213,6 +215,14 @@ module.exports = {
 			if(message.mentions.has(discord.Client.user) || message.content.toLowerCase().includes(discord.Client.user.username.toLowerCase())) {
 
 				if(message.author.id === discord.Client.user.id) return;
+
+
+				// Do not reply to messages that are replying to me if I posted a link
+				if(message.type === MessageType.Reply) {
+					const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
+					if(repliedTo.content.toLowerCase().includes("https://") && repliedTo.author.id === discord.Client.user.id) return;
+				}
+
 
 				const model = new DiscordModel();
 
@@ -239,7 +249,7 @@ module.exports = {
 					if(Math.random() < 0.66) {
 						await message.reply(comment);
 					} else {
-						await (message.channel  as TextChannel).send(comment);
+						await (message.channel as TextChannel).send(comment);
 					}
 
 				} else {
