@@ -74,7 +74,7 @@ module.exports = {
 			dir = 0;
 		}
 
-		await db.q("REPLACE INTO interaction_warnlist(`rl`,`type`,`reason`,`user`,`active`) VALUES(?,?,?,?,?)",[stringOptionRL,type,stringOptionReason,interaction.user.displayName,dir]).catch(e=>console.log(e));
+		await db.q("REPLACE INTO interaction_warnlist(`rl`,`type`,`reason`,`username`,`active`) VALUES(?,?,?,?,?)",[stringOptionRL,type,stringOptionReason,interaction.user.displayName,dir]).catch(e=>console.log(e));
 
 		embed.setDescription(`Blacklist: ${direction} ${stringOptionRL} (${type}) ${reasonText}`);
 

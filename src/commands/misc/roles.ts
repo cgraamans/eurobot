@@ -23,9 +23,9 @@ module.exports = {
 \`\`\`
 	/country - list the available countries you can get a role for
 	/country <country name> - add/remove country role and register as a new user
-	/help - DM help
 	/register - register as an unaffiliated new user
 	/roles - DM available roles
+	/help - DM help
 \`\`\`
 
 **Registered users**
@@ -43,7 +43,7 @@ module.exports = {
 **Administrative functions**
 
 \`\`\`
-    /blacklist <add/remove> <rl> - blacklist a source (@twitterUser or url)
+    /warnlist <add/remove> <rl> - blacklist a source (@twitterUser or url)
 	/lockchannel <channel> - make eurobot delete/or allow any posts except for urls in a channel
 \`\`\``);
 

@@ -45,23 +45,30 @@ module.exports = {
 		embed.setColor(0x001489);
 
 		const channelOption = interaction.options.getChannel('channel');
-		if(!channelOption) return;
-		if(channelOption.type !== ChannelType.GuildText) return;
-		if(!channelOption.id) return;
 
+		if(!channelOption) return;
+		if(!channelOption.id) return;
+		
 		let dir = 0;
-		let action = "unlocked";
+		let action = `${channelOption.name} is unlocked.\n\nYou may resume talking.`;
 		const dirOption = interaction.options.getString('dir');
 		if(dirOption && dirOption === 'add') {
 			dir = 1;
-			action = "locked;"
+			action = `${channelOption.name} has been locked by ${interaction.user}.\n\nYou may only post links until the channel is unlocked.`;
 		}
 
 		await db.q("REPLACE INTO interaction_lockchannel (`channelId`,`username`,`active`) VALUES(?,?,?)",[channelOption.id,interaction.user.displayName,dir]).catch(e=>console.log(e));
 
-		embed.setDescription(`${channelOption.name} is ${action}`);
+		embed.setDescription(action);
 
-		await interaction.reply({embeds:[embed],ephemeral:true});
+		const chanToSend = discord.Client.channels.cache.get(channelOption.id);
+		if(chanToSend && chanToSend.isTextBased()) {
+
+			chanToSend.send({embeds:[embed]});
+
+		}
+
+		return;
 
 	},
 

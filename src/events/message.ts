@@ -90,17 +90,19 @@ module.exports = {
 
 			}
 
-			// INTERACTION: WARNLIST AND LOCKCHANNEL
+			// INTERACTION: LOCKCHANNEL
+			const isLocked = await db.q("SELECT channelId FROM interaction_lockchannel WHERE channelId = ? AND active = 1",[message.channelId]).catch(e=>console.log(e));
+			if(isLocked.length > 0) {
+				if(!message.content.includes('https://') && message.author.id !== discord.Client.user.id) {
+
+					await message.delete();
+					return;
+
+				}
+			}
+
+			// INTERACTION: WARNLIST
 			if(message.content.includes('https://')) {
-
-
-				// LOCKCHANNEL
-				//
-
-
-
-				// WARNLIST
-				//
 
 				let type = "url"
 				let root;
@@ -138,7 +140,7 @@ module.exports = {
 
 				if(root) {
 
-					const hasBlock = await db.q("SELECT rl, reason FROM interaction_warnlist WHERE type = ? AND rl = ? AND ACTIVE = 1",[type,root]).catch(e=>console.log(e));
+					const hasBlock = await db.q("SELECT rl, reason FROM interaction_warnlist WHERE type = ? AND rl = ? AND active = 1",[type,root]).catch(e=>console.log(e));
 					if(hasBlock && hasBlock.length > 0) {
 	
 						let blockText = `${type==="twitter"?"@":""}${root} has been flagged as being an unreliable source of information. Please find alternate sources.`;
