@@ -26,13 +26,9 @@ console.log(`APP [${new Date()}] @ ${__dirname}`);
 
 const welcomeMessage = `Welcome to Forum Gotterfunken.
 
-
-
-\`\`\`
 Forum Gotterfunken is an EU-OSINT Server on Discord. EU-OSINT stands for European Union - Open Source Intelligence. We aim to provide up to date news and information regarding events in and around the EU from a European Perspective.
 
-Please read the #introduction and adhere to the #rules, say hello in #introduce-yourself, visit the serious-effort channels for news and information and come hang out in #general-effort for a casual chat. 
-\`\`\`
+Please read the #about-us and adhere to the #rules, say hello in #introduce-yourself, visit the serious-effort channels for news and information and come hang out in #general-effort for a casual chat.
 
 - type \`/help\` for more information  
 - type \`/roles\` to view avaiable roles and functions.

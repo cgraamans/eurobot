@@ -105,7 +105,7 @@ module.exports = {
 			const general = interaction.guild.channels.cache.get("257838262943481857") as TextChannel;
 
 			if(general) {
-				general.send(`Welcome to Forum Gotterfunken, <@${user.id}>!`);
+				await general.send(`Welcome to Forum Gotterfunken, <@${user.id}>!`);
 			}
 
 		}

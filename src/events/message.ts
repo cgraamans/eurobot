@@ -11,7 +11,9 @@ module.exports = {
 	name: 'messageCreate',
 	async execute(message:Message) {
 
-		// Routing
+		//
+		// ROUTING
+		//
 		if(discord.Config.Routes) {
 
 			let channelId:string;
@@ -54,14 +56,20 @@ module.exports = {
 
 		}
 
-		// Channel specific functions
+		//
+		// CHANNELS
+		//
 		if(message.channel) {
 
-			// Ignore Channel
+			//
+			// Ignore Channels
+			//
 			const ignoreChannel = discord.Config.Channels.filter(channel=>channel.category === "Ignore" && channel.channel_id === message.channel.id)
 			if(ignoreChannel.length > 0) return;
 
-			// TWEET CHANNEL
+			//
+			// Tweet Channels
+			//
 			const tweetChannels = discord.Config.Channels.filter(channel=>channel.category === "Twitter" && channel.channel_id === message.channel.id);
 			if(tweetChannels.length > 0) {
 				
@@ -90,7 +98,9 @@ module.exports = {
 
 			}
 
-			// INTERACTION: LOCKCHANNEL
+			//
+			// Interaction: LOCKCHANNEL
+			//
 			const isLocked = await db.q("SELECT channelId FROM interaction_lockchannel WHERE channelId = ? AND active = 1",[message.channelId]).catch(e=>console.log(e));
 			if(isLocked.length > 0) {
 				if(!message.content.includes('https://') && message.author.id !== discord.Client.user.id) {
@@ -101,7 +111,9 @@ module.exports = {
 				}
 			}
 
-			// INTERACTION: WARNLIST
+			//
+			// Interaction: WARNLIST
+			//
 			if(message.content.includes('https://')) {
 
 				let type = "url"
@@ -165,8 +177,8 @@ module.exports = {
 
 			}
 
-
-			//Twitter fixes
+			//
+			// Twitter Replace
 			//
 			// Regex:
 			// https:\/\/(www\.)?((twitter)|(x))(\.com)\/\w*\/status\/[0-9]*
@@ -178,7 +190,9 @@ module.exports = {
 				return;
 			}
 
-			// Reply redirect
+			//
+			// Reply Redirect
+			//
 			// IF reply and IF https in parent and IF mentioned channel and IF mentioned channel is forum -> copy to forum
 			if(message.type === MessageType.Reply) {
 
@@ -213,7 +227,26 @@ module.exports = {
 
 			}
 
+			//
+			// Introduction Channel
+			//
+			// Automatically register and welcome to general if they speak in the introduce-yourself channel.
+			if(message.guild.id === "257838262943481857" && !message.member.roles.cache.get("581605959990771725") && message.channel.id === "1063966888201293974") {
+
+				message.member.roles.add("581605959990771725");
+				const general = message.guild.channels.cache.get("257838262943481857") as TextChannel;
+
+				if(general) {
+
+					await general.send(`Welcome to Forum Gotterfunken, <@${message.member.id}>!`);
+
+				}
+
+			}
+
+			//
 			// Brain
+			//
 			if(message.mentions.has(discord.Client.user) || message.content.toLowerCase().includes(discord.Client.user.username.toLowerCase())) {
 
 				if(message.author.id === discord.Client.user.id) return;
