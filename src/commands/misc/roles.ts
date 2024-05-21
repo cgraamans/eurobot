@@ -18,7 +18,7 @@ module.exports = {
 			.setFooter({text:`Find me on https://twitter.com/eunewsbot`, iconURL:"https://twitter.com/eunewsbot"})
 			.setDescription(`Below you will find the list of available roles and commands for Eurobot and Forum Gotterfunken. 
 			
-			By being here and accessing these roles and commands you agree to adhere to our rules and follow the instructions of the moderators. For more information see #introduction.
+			By being here and accessing these roles and commands you agree to adhere to our rules and follow the instructions of the moderators. For more information see #about-us.
 
 **New users**
 
