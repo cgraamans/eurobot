@@ -26,7 +26,7 @@
     "typescript": "5.1"
   },
   "dependencies": {
-    "@atproto/api": "^0.6.23",
+    "@atproto/api": "^0.13.5",
     "@discordjs/builders": "^1.1.0",
     "@discordjs/rest": "^1.0.1",
     "command-line-args": "^5.2.0",
