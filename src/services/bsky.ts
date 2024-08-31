@@ -1,4 +1,4 @@
-import { BskyAgent, RichText } from "@atproto/api";
+import { AtpAgent, RichText } from "@atproto/api";
 import urlMetadata from 'url-metadata';
 
 export class BlueSky {
@@ -25,7 +25,7 @@ export class BlueSky {
 
     public async send(text:string) {
                 
-        const agent = new BskyAgent({ service: "https://bsky.social" });
+        const agent = new AtpAgent({ service: "https://bsky.social" });
         await agent.login({
           identifier: "forumgotterfunken@gmail.com",
           password: this.blueskyPassword,
