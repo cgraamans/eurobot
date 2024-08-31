@@ -1,4 +1,5 @@
 import { BskyAgent, RichText } from "@atproto/api";
+import urlMetadata from 'url-metadata';
 
 export class BlueSky {
 
@@ -29,14 +30,57 @@ export class BlueSky {
           identifier: "forumgotterfunken@gmail.com",
           password: this.blueskyPassword,
         });
-        const richText = new RichText({ text });
+
+        const richText = new RichText({ text:text });
         await richText.detectFacets(agent);
-        return agent.post({
-          $type: "app.bsky.feed.post",
-          text: richText.text,
-          facets: richText.facets,
-          createdAt: new Date().toISOString(),
-        });
+
+        let embedObj;
+        const matches = text.match(/https?:\/\/\S+/gi);
+        if(matches && matches.length > 0) {
+
+          const metaData = await urlMetadata(matches[0]).catch(e=>console.log(e));
+
+          console.log(matches);
+
+          if(metaData && metaData['og:image'] && metaData['og:url'] && metaData['og:title']) {
+
+            let blob = await fetch(metaData['og:image']).then(r => r.blob()).catch(e=>console.log(e));
+            if(blob) {
+              
+              const int8Arr = new Uint8Array(await blob.arrayBuffer());
+              const data = await agent.uploadBlob(int8Arr).catch(e=>console.log(e));
+              if(data && data.data && data.data.blob) {
+
+                embedObj = {
+                  embed: {
+                      $type: 'app.bsky.embed.external',
+                      external: {
+                          uri: metaData['og:url'],
+                          title: metaData['og:title'],
+                          description: metaData['og:description'],
+                          thumb: data.data.blob
+                      }
+                  } 
+                };
+
+              }
+
+            }
+
+          }
+
+        }
+
+        let payload = {
+            $type: "app.bsky.feed.post",
+            text: richText.text,
+            facets: richText.facets,
+            createdAt: new Date().toISOString(),
+        };
+
+        if(embedObj) payload = {...payload, ...embedObj};
+
+        return agent.post(payload);
 
     }
 

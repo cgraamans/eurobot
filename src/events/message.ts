@@ -191,6 +191,33 @@ module.exports = {
 			}
 
 			//
+			// Reddit Replace
+			//
+			// Regex:
+			// https:\/\/(www\.)?reddit\.com\/r\/\w*\/comments\/\w*\/\w*\/
+
+			// if(message.content.match(/https:\/\/(www\.)?reddit\.com\/r\/\w*\/(comments\/\w*\/\w*\/|s\/\w*)/gm)) {
+			// 	const cleaned = message.content.replace(/(reddit\.com)/gm,"vxreddit.com");
+			// 	await message.delete();
+			// 	await message.channel.send({content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,flags:[4096]});
+			// 	return;
+			// }
+
+			//
+			// Instagram Replace
+			//
+			// Regex:
+			// https:\/\/(www\.)instagram\.com\/(reel)\/(\S+)\/(\?\S+)
+
+			if(message.content.match(/https:\/\/(www\.)instagram\.com\/(reel)\/(\S+)\/(\?\S+)/gm)) {
+				const cleaned = message.content.replace(/(instagram\.com)/gm,"ddinstagram.com");
+				await message.delete();
+				await message.channel.send({content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,flags:[4096]});
+				return;
+			}
+
+
+			//
 			// Reply Redirect
 			//
 			// IF reply and IF https in parent and IF mentioned channel and IF mentioned channel is forum -> copy to forum
@@ -201,7 +228,7 @@ module.exports = {
 					const parentMsg = await message.fetchReference();
 					if(!parentMsg.content.includes("https://")) return;
 
-					const hasRole = message.member.roles.cache.some(role => ['Admin','Moderator','Trusted','Eurobot','Sponsor','Booster'].includes(role.name));
+					const hasRole = message.member.roles.cache.some(role => ['Registered'].includes(role.name));
 					if(!hasRole) return;
 
 					message.mentions.channels.each(async channelMentioned=>{
@@ -258,7 +285,6 @@ module.exports = {
 					if(repliedTo.content.toLowerCase().includes("https://") && repliedTo.author.id === discord.Client.user.id) return;
 				}
 
-
 				const model = new DiscordModel();
 
 				// for random across multiple servers
@@ -311,7 +337,7 @@ module.exports = {
 			}
 
 			// keyword react
-			if(message.content.toLowerCase().includes("uschi") || message.content.toLowerCase().includes("metsola") || message.content.toLowerCase().includes("michel")) {
+			if(message.content.toLowerCase().includes("uschi") || message.content.toLowerCase().includes("metsola") || message.content.toLowerCase().includes("costa")) {
 
 				if(message.author.id === discord.Client.user.id) return;
 

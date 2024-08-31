@@ -583,15 +583,10 @@
         { "reaction": "hm?", "category": "default" },
         { "reaction": "what now", "category": "default" },
         { "reaction": "FREUDE!", "category": "default" },
-
-        { "reaction": "gib meme", "category": "Idlestop" },
-        { "reaction": "...", "category": "Idlestop" },
-        { "reaction": "\\*ahem\\* FREUDE", "category": "Idlestop" },
-        { "reaction": "🙏 plz clap", "category": "Idlestop" },
-        { "reaction": "EU army when :pepeEU:", "category": "Idlestop" },
-        { "reaction": "still no treaty reform? smh :euroweary:", "category": "Idlestop" },
-        { "reaction": "so quiet here, like the sound of those brexit benefits :eurolul:", "category": "Idlestop" }
-
+        { "reaction": "gib meme", "category": "default" },
+        { "reaction": "...", "category": "default" },
+        { "reaction": "\\*ahem\\* FREUDE", "category": "default" },
+        { "reaction": "🙏 plz clap", "category": "default" }
      ],
 
      "Routes":[

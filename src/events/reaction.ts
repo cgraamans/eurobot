@@ -33,7 +33,7 @@ module.exports = {
             if(!articles || !articles.isTextBased()) return;
 
 
-            const hasRole = member.roles.cache.some(role => ['Admin','Moderator','Staff','Eurobot','Sponsor','Booster','Registered'].includes(role.name));
+            const hasRole = member.roles.cache.some(role => ['Admin','Moderator','Eurobot','Registered'].includes(role.name));
             if(!hasRole) return;
 
             const uri = reaction.message.content.match(/\bhttps?:\/\/\S+/gi);

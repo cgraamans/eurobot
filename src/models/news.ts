@@ -33,7 +33,6 @@ export default class NewsModel {
         if(type === "hot") {
 
             let hot = await reddit.client.getHot(obj.keyword,{limit:this.maxListSize+2})
-            .catch(e=>{console.log(e)});
 
             if(hot){
 
@@ -47,7 +46,6 @@ export default class NewsModel {
 
 
             let New = await reddit.client.getNew(obj.keyword,{limit:this.maxListSize+2})
-            .catch(e=>{console.log(e)});
 
             if(New){
 
