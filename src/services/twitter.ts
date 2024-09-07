@@ -32,7 +32,6 @@ export class Twitter {
     // post twitter message with media object
     public async post(message:string,media?:Eurobot.Twitter.MediaObj[]) {
 
-
         return await this.client.v2.tweet({text:message})
             .catch(e=>{console.log("POST ERROR"),console.log(e)});
 

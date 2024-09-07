@@ -23,34 +23,95 @@ export class BlueSky {
 
     }
 
+    public async upImageToBSky(url:string, agent:AtpAgent) {
+
+      try {
+
+        let data;
+
+        let blob = await fetch(url).then(r => r.blob())
+          .catch(e=>console.log(e));
+        if(blob) {
+          
+          const buffer = await blob.arrayBuffer()
+            .catch(e=>{console.log(e)});
+          if(buffer) {
+
+            const int8Arr = new Uint8Array(buffer);
+            if(int8Arr) {
+
+              data = await agent.uploadBlob(int8Arr)
+                .catch(e=>console.log(e));
+
+            }
+
+          }
+
+        }
+
+        return data;
+
+      } catch(e) {
+
+        console.log(e);
+
+        return;
+
+      }
+
+    }
+
     public async send(text:string) {
                 
         const agent = new AtpAgent({ service: "https://bsky.social" });
         await agent.login({
           identifier: "forumgotterfunken@gmail.com",
           password: this.blueskyPassword,
-        });
+        })
+        .catch(e=>console.log(e));
+
+        if(!agent) return;
 
         const richText = new RichText({ text:text });
-        await richText.detectFacets(agent);
+        await richText.detectFacets(agent)
+          .catch(e=>console.log(e));
 
         let embedObj;
+
         const matches = text.match(/https?:\/\/\S+/gi);
         if(matches && matches.length > 0) {
 
-          const metaData = await urlMetadata(matches[0]).catch(e=>console.log(e));
+          if(matches[0].endsWith(".png") || matches[0].endsWith(".jpg") || matches[0].endsWith(".jpeg")  ) {
+            
+            const imageData = await this.upImageToBSky(matches[0],agent)
+              .catch(e=>console.log(e));
+            if(imageData && imageData.data && imageData.data.blob) {
 
-          console.log(matches);
+              const cleanText = text.replace(matches[0],"");
 
-          if(metaData && metaData['og:image'] && metaData['og:url'] && metaData['og:title']) {
+              embedObj = {
+                embed: {
+                    $type: 'app.bsky.embed.images',
+                    images:[{
+                      alt:cleanText,
+                      image:imageData.data.blob
+                    }]
+                  } 
 
-            let blob = await fetch(metaData['og:image']).then(r => r.blob()).catch(e=>console.log(e));
-            if(blob) {
-              
-              const int8Arr = new Uint8Array(await blob.arrayBuffer());
-              const data = await agent.uploadBlob(int8Arr).catch(e=>console.log(e));
-              if(data && data.data && data.data.blob) {
+              };
 
+            }
+
+          } else {
+
+            const metaData = await urlMetadata(matches[0])
+              .catch(e=>console.log(e));
+            if(metaData && metaData['og:image'] && metaData['og:url'] && metaData['og:title']) {
+  
+              const imageData = await this.upImageToBSky(metaData['og:image'],agent)
+                .catch(e=>console.log(e));
+              if(imageData && imageData.data && imageData.data.blob) {
+  
                 embedObj = {
                   embed: {
                       $type: 'app.bsky.embed.external',
@@ -58,13 +119,15 @@ export class BlueSky {
                           uri: metaData['og:url'],
                           title: metaData['og:title'],
                           description: metaData['og:description'],
-                          thumb: data.data.blob
+                          thumb: imageData.data.blob
                       }
-                  } 
+  
+                    } 
+  
                 };
-
+  
               }
-
+  
             }
 
           }
@@ -80,7 +143,7 @@ export class BlueSky {
 
         if(embedObj) payload = {...payload, ...embedObj};
 
-        return agent.post(payload);
+        return await agent.post(payload);
 
     }
 

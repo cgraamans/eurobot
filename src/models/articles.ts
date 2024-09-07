@@ -138,27 +138,36 @@ export default class ArticleModel {
         let discordUserID = message.author.id;
         if(user) discordUserID = user.id;
 
-        const tweetMedia = await this.tweetData(message);
-        const sanitizedTweet = this.textSlice(message);
-        const sanitizedLarge = this.textSlice(message,500,false);
+        const sanitizedTextSmall = this.textSlice(message);
+        const sanitizedTextLarge = this.textSlice(message,500,false);
 
         const post:{twitter:void|twitter.ResponseData,mastodon:any,telegram:any,bluesky:void|{
             uri: string;
             cid: string;
         }} = {twitter:undefined,mastodon:undefined,telegram:undefined,bluesky:undefined};
 
-        if(sanitizedTweet) {
-            post.twitter = await Twitter.post(sanitizedTweet,tweetMedia).catch(e=>console.log(e));
+        if(sanitizedTextSmall) {
+            if(!message.content.endsWith(".png") && !message.content.endsWith(".jpg") && !message.content.endsWith(".jpeg")) {
+                const tweetMedia = await this.tweetData(message);
+                post.twitter = await Twitter.post(sanitizedTextSmall,tweetMedia)
+                    .catch(e=>console.log(e));    
+            }
         }
-        if(sanitizedLarge) {
-            post.mastodon = await Mastodon.client.postStatus(sanitizedLarge,{})
-            .catch((err:any)=>console.log(err));
+        if(sanitizedTextLarge) {
+            if(!message.content.endsWith(".png") && !message.content.endsWith(".jpg") && !message.content.endsWith(".jpeg")) {
+                post.mastodon = await Mastodon.client.postStatus(sanitizedTextLarge,{})
+                    .catch((e:any)=>console.log(e));
+            }
         }
-        if(sanitizedLarge) {
-            post.telegram = await Telegram.client.sendMessage("@euintnews",sanitizedTweet).catch(e=>console.log(e));
+        if(sanitizedTextLarge) {
+            if(!message.content.endsWith(".png") && !message.content.endsWith(".jpg") && !message.content.endsWith(".jpeg")) {
+                post.telegram = await Telegram.client.sendMessage("@euintnews",sanitizedTextLarge)
+                    .catch(e=>console.log(e));
+            }
         }
-        if(sanitizedLarge) {
-            post.bluesky = await BlueSky.send(sanitizedLarge);
+        if(sanitizedTextLarge) {
+            post.bluesky = await BlueSky.send(sanitizedTextLarge)
+                .catch(e=>console.log(e));
         }
 
         return post;

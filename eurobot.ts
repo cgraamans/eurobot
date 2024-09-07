@@ -212,9 +212,7 @@ try {
 
                 if(!item.title || !item.url) return;
                 if(item.thumbnail === "self" || item.thumbnail === "nsfw" || item.thumbnail === "default") return;
-                if(item.is_self || item.is_video) return;
-                if(item.url.endsWith(".jpg")) return;
-                if(item.url.endsWith(".png")) return;
+                if(item.is_self || item.is_video || item.is_meta) return;
                 if(item.url.startsWith("https://v.redd.it")) return;
 
                 const hasWhitelist = await db.q(`SELECT * from reddit_whitelist WHERE name = ?`,[item.author.name]);
