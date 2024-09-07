@@ -1,6 +1,6 @@
 # Eurobot
 
-Eurobot is a discord.js bot which provides news, calendar and routing functions to the Forum Gotterfunken Discord server.
+Eurobot is a discord.js bot which provides news, calendar and routing functions to the [Forum Gotterfunken](https://discord.com/servers/forum-gotterfunken-257838262943481857) discord server.
 
 ## Commands
 
@@ -11,19 +11,20 @@ npm i -g typescript pm2
 ```
 
 Must be in posession of:  
-- MySQL installed with the database imported from `./sql/init.sql`  
+- MySQL or MariaDB installed with the database imported from `./sql/init.sql`  
 - Google calendar json export  
 - Reddit API keys  
 - Twitter API keys  
 - Mastodon token  
-- Telegram token
+- Telegram token  
+- Bluesky token
 
 ### Build
 ```bash
 npm run build
 ```
 
-Note: can run on a raspberry pi but can't be built on on
+Note: can run on a Raspberry Pi but can't be built on one, lol.
 
 ### Watch
 ```bash
