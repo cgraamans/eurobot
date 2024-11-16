@@ -182,7 +182,6 @@ module.exports = {
 			//
 			// Regex:
 			// https:\/\/(www\.)?((twitter)|(x))(\.com)\/\w*\/status\/[0-9]*
-
 			if(message.content.match(/https:\/\/(www\.)?((twitter)|(x))(\.com)\/\w*\/status\/[0-9]*/gm)) {
 				const cleaned = message.content.replace(/(twitter|x)(\.com)/gm,"fxtwitter.com");
 				await message.channel.send({content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,flags:[4096]});
@@ -205,17 +204,21 @@ module.exports = {
 
 			//
 			// Instagram Replace
-			//
-			// Regex:
-			// https:\/\/(www\.)instagram\.com\/(reel)\/(\S+)\/(\?\S+)
-
-			if(message.content.match(/https:\/\/(www\.)instagram\.com\/(reel)\/(\S+)\/(\?\S+)/gm)) {
+			if(message.content.includes('https://instagram.com') || message.content.includes('https://www.instagram.com')) {
 				const cleaned = message.content.replace(/(instagram\.com)/gm,"ddinstagram.com");
 				await message.delete();
 				await message.channel.send({content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,flags:[4096]});
 				return;
 			}
 
+			//
+			// Bluesky Replace
+			if(message.content.includes('https://bsky.app')) {
+				const cleaned = message.content.replace(/(bsky\.app)/gm,"bskyx.app");
+				await message.delete();
+				await message.channel.send({content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,flags:[4096]});
+				return;
+			}
 
 			//
 			// Reply Redirect
