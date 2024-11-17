@@ -27,13 +27,14 @@ https://discord.com/servers/forum-gotterfunken-257838262943481857
 \`\`\`
 Forum Gotterfunken is an EU-OSINT Server on Discord. EU-OSINT stands for European Union - Open Source Intelligence. We aim to provide up to date news and information regarding events in and around the EU from a European Perspective.
 
-Please read the #introduction and adhere to the #rules, say hello in #introduce-yourself, visit the serious-effort channels and come hang out in #general-effort for a casual chat. 
+Please read the #introduction and adhere to the #rules, say hello in #introduce-yourself, visit #serious-effort and the EU News and Geopolitics categories for serious political discussions and come hang out in #general-effort or #low-effort for a casual chat.
 \`\`\`
 
 **You can follow Eurobot on...**
-- https://twitter.com/eunewsbot
-- https://mas.to/@eunews
-- https://t.me/euintnews
+- https://twitter.com/eunewsbot  
+- https://mas.to/@eunews  
+- https://t.me/euintnews  
+- https://bsky.app/profile/eurobot.bsky.social
 
 **Roles?**
 

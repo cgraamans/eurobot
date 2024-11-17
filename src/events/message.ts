@@ -178,6 +178,10 @@ module.exports = {
 			}
 
 			//
+			// URL REPLACERS FOR SOCIAL MEDIA LINKS
+			//
+
+			//
 			// Twitter Replace
 			//
 			// Regex:
@@ -191,16 +195,12 @@ module.exports = {
 
 			//
 			// Reddit Replace
-			//
-			// Regex:
-			// https:\/\/(www\.)?reddit\.com\/r\/\w*\/comments\/\w*\/\w*\/
-
-			// if(message.content.match(/https:\/\/(www\.)?reddit\.com\/r\/\w*\/(comments\/\w*\/\w*\/|s\/\w*)/gm)) {
-			// 	const cleaned = message.content.replace(/(reddit\.com)/gm,"vxreddit.com");
-			// 	await message.delete();
-			// 	await message.channel.send({content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,flags:[4096]});
-			// 	return;
-			// }
+			if(message.content.includes('https://reddit.com') || message.content.includes('https://www.reddit.com')) {
+				const cleaned = message.content.replace(/(reddit\.com)/gm,"rxddit.com");
+				await message.delete();
+				await message.channel.send({content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,flags:[4096]});
+				return;
+			}
 
 			//
 			// Instagram Replace
