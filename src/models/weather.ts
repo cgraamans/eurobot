@@ -8,7 +8,7 @@ export default class WeatherModel {
 
         try {
 
-            const response = await fetch(`https://wttr.in/${area}?format=%l:+%C+%c+%t`);
+            const response = await fetch(`https://wttr.in/${area}?format=4`);
             if(!response.ok) return;
 
             return response.text();

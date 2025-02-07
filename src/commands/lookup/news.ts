@@ -58,7 +58,7 @@ module.exports = {
 
 		const embed = news.toRich(newsObj);
 
-		await interaction.reply({embeds:[embed],ephemeral:true});
+		await interaction.reply({embeds:[embed]});
 
 		return;
 		

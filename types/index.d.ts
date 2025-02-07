@@ -144,6 +144,19 @@ export namespace Eurobot {
 
     }
 
+    export namespace Treaty {
+
+        export interface Obj {
+
+            title:string,
+            article?:string,
+            articleText?:string,
+            articleLink?:string,
+
+        }
+
+    }
+
     // OLD MODELS FOR REFERENCE
     export namespace Models {
 

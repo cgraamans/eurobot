@@ -3,55 +3,21 @@ import * as FileType from "file-type"
 import * as https from "https";
 
 import Discord from "discord.js";
-import twitter from "twitter";
 
-import Twitter from "../services/twitter";
 import Telegram from "../services/telegram";
 import Mastodon from "../services/mastodon";
 import BlueSky from "../services/bsky";
 
-import Tools from '../tools';
 import {Eurobot} from "../../types/index";
 import db from "../services/db";
+
+import axios from "axios";
+import * as cheerio from 'cheerio';
+
 
 export default class ArticleModel {
 
     constructor() {
-
-    }
-
-    private async getFile(url:string):Promise<Buffer> {
-
-        return new Promise((resolve,reject)=>{
-
-            let data:any[] = []
-
-            https.get(url, (res) => {
-
-                if (res.statusCode === 200) {
-
-                    res.on("data",chunk=>{
-                        data.push(chunk);
-                    });
-
-                    res.on("end",()=>{
-                        const buffer:Buffer = Buffer.concat(data);
-                        resolve(buffer);
-                    });
-
-                    res.on("error",err=>{
-                        reject(err);
-                    });
-
-                } else {
-
-                    reject(`Server responded with ${res.statusCode}: ${res.statusMessage}`);
-
-                }
-
-            });
-
-        });
 
     }
 
@@ -61,41 +27,6 @@ export default class ArticleModel {
 
     }
 
-    // Prepare tweet data (attachments)
-    public async tweetData(message:Discord.Message) {
-
-        let tweetMedia:Eurobot.Twitter.MediaObj[] = [];
-
-        // images [WIP]
-        if(message.attachments) {
-
-            let urls:string[] = [];
-
-            message.attachments.forEach(attachment=>{
-                urls.push(attachment.url);
-            });
-
-            await Tools.asyncForEach(urls,async (url:string)=>{
-
-                const file = await this.getFile(url)
-                                .catch(e=>{console.log(e)});
-
-                if(file) {
-
-                    const type = FileType.fromBuffer(file).toString();
-                    tweetMedia.push({size:Buffer.byteLength(file).toString(),type:type,data:file});
-
-                }
-
-
-            });
-
-        }
-
-        return tweetMedia
-        
-
-    }
 
     // Prepare tweet
     public textSlice(message:Discord.Message,limit:number = 280,linkShortened:boolean = true) {
@@ -141,18 +72,7 @@ export default class ArticleModel {
         const sanitizedTextSmall = this.textSlice(message);
         const sanitizedTextLarge = this.textSlice(message,500,false);
 
-        const post:{twitter:void|twitter.ResponseData,mastodon:any,telegram:any,bluesky:void|{
-            uri: string;
-            cid: string;
-        }} = {twitter:undefined,mastodon:undefined,telegram:undefined,bluesky:undefined};
-
-        if(sanitizedTextSmall) {
-            if(!message.content.endsWith(".png") && !message.content.endsWith(".jpg") && !message.content.endsWith(".jpeg")) {
-                const tweetMedia = await this.tweetData(message);
-                post.twitter = await Twitter.post(sanitizedTextSmall,tweetMedia)
-                    .catch(e=>console.log(e));    
-            }
-        }
+        let post:any;
         if(sanitizedTextLarge) {
             if(!message.content.endsWith(".png") && !message.content.endsWith(".jpg") && !message.content.endsWith(".jpeg")) {
                 post.mastodon = await Mastodon.client.postStatus(sanitizedTextLarge,{})
@@ -171,6 +91,93 @@ export default class ArticleModel {
         }
 
         return post;
+
+    }
+
+    //
+    // GET EU TREATIES
+    //
+    public async getTreaties(treatyString:string[]):Promise<void|Eurobot.Treaty.Obj> {
+
+        try {
+
+            const TFEUsplit = treatyString[0].split(" ");
+            let art = TFEUsplit[0];
+            let subArtInt;
+            let maxArt = 358;
+            let artURL = "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A12016E";
+            let returnObj:Eurobot.Treaty.Obj = {
+                title:`🇪🇺 Treaty on the Functioning of the European Union`
+            }
+
+
+            if(TFEUsplit[1] === 'teu') {
+                returnObj.title = `🇪🇺 Treaty on European Union`;
+                maxArt = 55
+                artURL = "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A12016M";
+            }
+
+            if(art.includes(".")){
+                const splitArtArr = art.split(".");
+                subArtInt = parseInt(splitArtArr[1]);
+                art = splitArtArr[0];
+            }
+            
+            const artInt = parseInt(art);
+
+            if(artInt > maxArt) art = "001";
+            if(artInt < 100) art = "0" + art;
+            if(artInt < 10) art = "0" + art;
+            if(artInt < 0) art = "001";
+            
+            returnObj.articleLink = artURL + art;
+            
+            let ml = await axios.get(returnObj.articleLink).catch(e=>{console.log(e)});
+            if(!ml) return;
+        
+            const $ = cheerio.load(ml.data);
+            
+            let artTitle = $("div#document1").find("div.tabContent > div > p.ti-art").text();
+            if(!artTitle && artTitle.length < 1) return;
+        
+            artTitle = artTitle.replace(/(\&nbsp;)/gm,"");
+            returnObj.article = artTitle;
+
+            let artTxtArr = $("div#document1")
+                .find("div.tabContent > div > p.normal")
+                .toArray()
+                .map(elem=> $(elem).text());
+
+            if(subArtInt && artTxtArr.length > subArtInt-1) {
+                
+                let locatedSubArt;
+                for(let i=0,c=artTxtArr.length;i<c;i++) {
+                    if(artTxtArr[i].startsWith(subArtInt.toString())) {
+                        locatedSubArt = i;
+                    }
+                }
+
+                if(locatedSubArt) {
+                    artTxtArr[0] = artTxtArr[locatedSubArt];
+                    artTxtArr.length = 1;
+                }
+                
+            }
+
+            if(artTxtArr.length > 3) {
+                artTxtArr.length = 3;
+                artTxtArr.push(`[...]`)
+            }
+
+            returnObj.articleText = artTxtArr.join('\n');
+
+            return returnObj;
+
+        } catch(e) {
+
+            return;
+
+        }
 
     }
 

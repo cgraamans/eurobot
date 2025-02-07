@@ -221,6 +221,15 @@ module.exports = {
 			}
 
 			//
+			// Spotify Replace
+			if(message.content.includes('https://open.spotify.com/')) {
+				const cleaned = message.content.replace(/(open\.spotify)/gm,"player.spotify");
+				await message.delete();
+				await message.channel.send({content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,flags:[4096]});
+				return;
+			}
+
+			//
 			// Reply Redirect
 			//
 			// IF reply and IF https in parent and IF mentioned channel and IF mentioned channel is forum -> copy to forum
@@ -269,6 +278,28 @@ module.exports = {
 				if(general) {
 
 					await general.send(`Welcome to Forum Gotterfunken, <@${message.member.id}>!`);
+
+				}
+
+			}
+
+			//
+			// TEU, TFEU LOOKUP
+			// 
+			const TFEU = message.content.toLowerCase().match(/((\d+|\d+\.\d+) (tfeu|teu))/gm);
+			if(TFEU) {
+
+				const ModelArticle = new ArticleModel();
+				const treatyObj = await ModelArticle.getTreaties(TFEU);
+
+				if(treatyObj) {
+
+					let embed = new EmbedBuilder()
+						.setTitle(treatyObj.title)
+						.setColor(0xFFCC00)
+						.setDescription(`**${treatyObj.article}**\n\n${treatyObj.articleText}\n\n${treatyObj.articleLink}`);
+
+					await message.reply({embeds:[embed]});
 
 				}
 
