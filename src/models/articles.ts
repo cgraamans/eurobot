@@ -29,7 +29,7 @@ export default class ArticleModel {
 
 
     // Prepare tweet
-    public textSlice(message:Discord.Message,limit:number = 280,linkShortened:boolean = true) {
+    public textSlice(message:Discord.Message,limit:number = 299,linkShortened:boolean = true) {
 
         let text = message.content;
 
@@ -47,9 +47,9 @@ export default class ArticleModel {
         });
 
         let prodTxt = textElements.join(" ");
-        if(prodTxt.length + textLink.length > 280) {
+        if(prodTxt.length + textLink.length > limit) {
         
-            prodTxt = prodTxt.slice(0,(280 - (textLink.length + 3))) + "...";
+            prodTxt = prodTxt.slice(0,(limit - (textLink.length + 3))) + "...";
 
         }
 
@@ -69,10 +69,10 @@ export default class ArticleModel {
         let discordUserID = message.author.id;
         if(user) discordUserID = user.id;
 
-        const sanitizedTextSmall = this.textSlice(message);
+        const sanitizedTextSmall = this.textSlice(message,299,false);
         const sanitizedTextLarge = this.textSlice(message,500,false);
 
-        let post:any;
+        let post:any = {};
         if(sanitizedTextLarge) {
             if(!message.content.endsWith(".png") && !message.content.endsWith(".jpg") && !message.content.endsWith(".jpeg")) {
                 post.mastodon = await Mastodon.client.postStatus(sanitizedTextLarge,{})
@@ -86,7 +86,7 @@ export default class ArticleModel {
             }
         }
         if(sanitizedTextLarge) {
-            post.bluesky = await BlueSky.send(sanitizedTextLarge)
+            post.bluesky = await BlueSky.send(sanitizedTextSmall)
                 .catch(e=>console.log(e));
         }
 

@@ -1,5 +1,5 @@
 import discord from "../services/discord";
-import {Message,EmbedBuilder, TextChannel, BaseMessageOptions, User, MessageReaction, ChannelType,MessageType} from "discord.js";
+import {Message,EmbedBuilder, TextChannel, BaseMessageOptions, MessageType, MessageReplyOptions, MessageCreateOptions} from "discord.js";
 import ArticleModel from "../models/articles";
 import DiscordModel from "../models/discord";
 import Tools from '../tools';
@@ -9,7 +9,34 @@ import db from "../services/db";
 module.exports = {
 
 	name: 'messageCreate',
+
+	//
+	// Main Execution Function
+	//
 	async execute(message:Message) {
+
+		//
+		// SubFunctions
+		//
+
+		const replaceMessageLink = async (message:Message,payload:MessageCreateOptions|MessageReplyOptions) => {
+
+			if(message.type === MessageType.Reply) {
+
+				const parentMsg = await message.fetchReference();
+				await parentMsg.reply(payload);
+
+			} else {
+
+				await message.channel.send(payload);
+
+			}
+
+			await message.delete();
+
+			return;
+
+		};
 
 		//
 		// ROUTING
@@ -57,7 +84,7 @@ module.exports = {
 		}
 
 		//
-		// CHANNELS
+		// CHANNELS ONLY
 		//
 		if(message.channel) {
 
@@ -66,6 +93,11 @@ module.exports = {
 			//
 			const ignoreChannel = discord.Config.Channels.filter(channel=>channel.category === "Ignore" && channel.channel_id === message.channel.id)
 			if(ignoreChannel.length > 0) return;
+
+			//
+			// Ignore everyones and heres
+			// 
+			if(message.mentions.everyone) return;
 
 			//
 			// Tweet Channels
@@ -187,46 +219,82 @@ module.exports = {
 			// Regex:
 			// https:\/\/(www\.)?((twitter)|(x))(\.com)\/\w*\/status\/[0-9]*
 			if(message.content.match(/https:\/\/(www\.)?((twitter)|(x))(\.com)\/\w*\/status\/[0-9]*/gm)) {
+
 				const cleaned = message.content.replace(/(twitter|x)(\.com)/gm,"fxtwitter.com");
-				await message.channel.send({content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,flags:[4096]});
-				await message.delete();
+
+				const payload = {
+					content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,
+					flags:[4096]
+				};
+
+				await replaceMessageLink(message,payload);
+
 				return;
+
 			}
 
 			//
 			// Reddit Replace
 			if(message.content.includes('https://reddit.com') || message.content.includes('https://www.reddit.com')) {
+			
 				const cleaned = message.content.replace(/(reddit\.com)/gm,"rxddit.com");
-				await message.delete();
-				await message.channel.send({content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,flags:[4096]});
+			
+				const payload = {
+					content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,
+					flags:[4096]
+				};
+
+				await replaceMessageLink(message,payload);
+
 				return;
+
 			}
 
 			//
 			// Instagram Replace
 			if(message.content.includes('https://instagram.com') || message.content.includes('https://www.instagram.com')) {
+				
 				const cleaned = message.content.replace(/(instagram\.com)/gm,"ddinstagram.com");
-				await message.delete();
-				await message.channel.send({content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,flags:[4096]});
+				const payload = {
+					content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,
+					flags:[4096]
+				};
+
+				await replaceMessageLink(message,payload);
+
 				return;
+			
 			}
 
 			//
 			// Bluesky Replace
 			if(message.content.includes('https://bsky.app')) {
-				const cleaned = message.content.replace(/(bsky\.app)/gm,"bskyx.app");
-				await message.delete();
-				await message.channel.send({content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,flags:[4096]});
+
+				const cleaned = message.content.replace(/(bsky\.app)/gm,"xbsky.app");
+				const payload = {
+					content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,
+					flags:[4096]
+				};
+
+				await replaceMessageLink(message,payload);
+
 				return;
 			}
 
 			//
 			// Spotify Replace
 			if(message.content.includes('https://open.spotify.com/')) {
+
 				const cleaned = message.content.replace(/(open\.spotify)/gm,"player.spotify");
-				await message.delete();
-				await message.channel.send({content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,flags:[4096]});
+				const payload = {
+					content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,
+					flags:[4096]
+				};
+
+				await replaceMessageLink(message,payload);
+
 				return;
+
 			}
 
 			//
