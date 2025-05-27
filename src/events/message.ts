@@ -303,6 +303,8 @@ module.exports = {
 			// IF reply and IF https in parent and IF mentioned channel and IF mentioned channel is forum -> copy to forum
 			if(message.type === MessageType.Reply) {
 
+				if(message.member.user.bot) return;
+
 				if(message.mentions.channels.size > 0) {
 
 					const parentMsg = await message.fetchReference();
@@ -310,6 +312,8 @@ module.exports = {
 
 					const hasRole = message.member.roles.cache.some(role => ['Registered'].includes(role.name));
 					if(!hasRole) return;
+
+					
 
 					message.mentions.channels.each(async channelMentioned=>{
 	
