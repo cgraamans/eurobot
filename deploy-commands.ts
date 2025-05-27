@@ -3,14 +3,13 @@ import { REST, Routes } from 'discord.js';
 import fs from 'fs';
 import path from 'path';
 
-
 // Eurobot
 const clientId = '673969077319892992';
-
 // FG
 const guildId = '257838262943481857';
 
 const commands = [];
+
 // Grab all the command files from the commands directory you created earlier
 const foldersPath = path.join(__dirname, 'src/commands');
 const commandFolders = fs.readdirSync(foldersPath);
@@ -37,6 +36,15 @@ const rest = new REST().setToken(process.env["EUROBOT_DISCORD"]);
 // and deploy your commands!
 (async () => {
 	try {
+
+		console.log(`Started removing (/) commands.`);
+
+		// The put method is used to fully refresh all commands in the guild with the current set
+		const datanum:any = await rest.put(
+			Routes.applicationGuildCommands(clientId, guildId),
+			{ body: [] },
+		);
+
 		console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
 		// The put method is used to fully refresh all commands in the guild with the current set
@@ -46,8 +54,10 @@ const rest = new REST().setToken(process.env["EUROBOT_DISCORD"]);
 		);
 
 		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+
 	} catch (error) {
 		// And of course, make sure you catch and log any errors!
 		console.error(error);
 	}
+
 })();

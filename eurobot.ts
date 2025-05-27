@@ -174,7 +174,7 @@ try {
         newsObj.row = keywordObjRow;
 
 		// get news
-		newsObj = await newsModel.get(newsObj);
+		newsObj = await newsModel.get(newsObj,"new");
         if(!newsObj) return;
 
 		if((newsObj.subreddit && newsObj.subreddit.length > 0) || (newsObj.twitter && newsObj.twitter.length > 0)) {    

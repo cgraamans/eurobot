@@ -270,7 +270,7 @@ module.exports = {
 			// Bluesky Replace
 			if(message.content.includes('https://bsky.app')) {
 
-				const cleaned = message.content.replace(/(bsky\.app)/gm,"xbsky.app");
+				const cleaned = message.content.replace(/(https\:\/\/bsky\.app)/gm,"https://xbsky.app");
 				const payload = {
 					content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,
 					flags:[4096]
@@ -315,7 +315,6 @@ module.exports = {
 	
 						await channelMentioned.fetch();
 						if(!channelMentioned.isTextBased()) return;
-						// if(!channelMentioned.isThread()) return;
 	
 						let channelMentionSend = parentMsg.content;
 						if(parentMsg.author.id !== discord.Client.user.id) {
