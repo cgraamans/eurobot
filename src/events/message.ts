@@ -16,29 +16,6 @@ module.exports = {
 	async execute(message:Message) {
 
 		//
-		// SubFunctions
-		//
-
-		const replaceMessageLink = async (message:Message,payload:MessageCreateOptions|MessageReplyOptions) => {
-
-			if(message.type === MessageType.Reply) {
-
-				const parentMsg = await message.fetchReference();
-				await parentMsg.reply(payload);
-
-			} else {
-
-				await message.channel.send(payload);
-
-			}
-
-			await message.delete();
-
-			return;
-
-		};
-
-		//
 		// ROUTING
 		//
 		if(discord.Config.Routes) {
@@ -210,100 +187,10 @@ module.exports = {
 			}
 
 			//
-			// URL REPLACERS FOR SOCIAL MEDIA LINKS
-			//
-
-			//
-			// Twitter Replace
-			//
-			// Regex:
-			// https:\/\/(www\.)?((twitter)|(x))(\.com)\/\w*\/status\/[0-9]*
-			if(message.content.match(/https:\/\/(www\.)?((twitter)|(x))(\.com)\/\w*\/status\/[0-9]*/gm)) {
-
-				const cleaned = message.content.replace(/(twitter|x)(\.com)/gm,"fxtwitter.com");
-
-				const payload = {
-					content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,
-					flags:[4096]
-				};
-
-				await replaceMessageLink(message,payload);
-
-				return;
-
-			}
-
-			//
-			// Reddit Replace
-			if(message.content.includes('https://reddit.com') || message.content.includes('https://www.reddit.com')) {
-			
-				const cleaned = message.content.replace(/(reddit\.com)/gm,"rxddit.com");
-			
-				const payload = {
-					content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,
-					flags:[4096]
-				};
-
-				await replaceMessageLink(message,payload);
-
-				return;
-
-			}
-
-			//
-			// Instagram Replace
-			if(message.content.includes('https://instagram.com') || message.content.includes('https://www.instagram.com')) {
-				
-				const cleaned = message.content.replace(/(instagram\.com)/gm,"ddinstagram.com");
-				const payload = {
-					content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,
-					flags:[4096]
-				};
-
-				await replaceMessageLink(message,payload);
-
-				return;
-			
-			}
-
-			//
-			// Bluesky Replace
-			if(message.content.includes('https://bsky.app')) {
-
-				const cleaned = message.content.replace(/(https\:\/\/bsky\.app)/gm,"https://xbsky.app");
-				const payload = {
-					content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,
-					flags:[4096]
-				};
-
-				await replaceMessageLink(message,payload);
-
-				return;
-			}
-
-			//
-			// Spotify Replace
-			if(message.content.includes('https://open.spotify.com/')) {
-
-				const cleaned = message.content.replace(/(open\.spotify)/gm,"player.spotify");
-				const payload = {
-					content:`By ${message.author.toString()} in ${message.channel.toString()}\n${cleaned}`,
-					flags:[4096]
-				};
-
-				await replaceMessageLink(message,payload);
-
-				return;
-
-			}
-
-			//
 			// Reply Redirect
 			//
 			// IF reply and IF https in parent and IF mentioned channel and IF mentioned channel is forum -> copy to forum
 			if(message.type === MessageType.Reply) {
-
-				if(message.member.user.bot) return;
 
 				if(message.mentions.channels.size > 0) {
 
