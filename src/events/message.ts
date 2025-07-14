@@ -107,84 +107,84 @@ module.exports = {
 
 			}
 
-			//
-			// Interaction: LOCKCHANNEL
-			//
-			const isLocked = await db.q("SELECT channelId FROM interaction_lockchannel WHERE channelId = ? AND active = 1",[message.channelId]).catch(e=>console.log(e));
-			if(isLocked.length > 0) {
-				if(!message.content.includes('https://') && message.author.id !== discord.Client.user.id) {
+			// //
+			// // Interaction: LOCKCHANNEL
+			// //
+			// const isLocked = await db.q("SELECT channelId FROM interaction_lockchannel WHERE channelId = ? AND active = 1",[message.channelId]).catch(e=>console.log(e));
+			// if(isLocked.length > 0) {
+			// 	if(!message.content.includes('https://') && message.author.id !== discord.Client.user.id) {
 
-					await message.delete();
-					return;
+			// 		await message.delete();
+			// 		return;
 
-				}
-			}
+			// 	}
+			// }
 
-			//
-			// Interaction: WARNLIST
-			//
-			if(message.content.includes('https://')) {
+			// //
+			// // Interaction: WARNLIST
+			// //
+			// if(message.content.includes('https://')) {
 
-				let type = "url"
-				let root;
-				let splitIndex = 2;
-				let toProcess:string[] = [];
+			// 	let type = "url"
+			// 	let root;
+			// 	let splitIndex = 2;
+			// 	let toProcess:string[] = [];
 				
-				let splitMsg = message.content.split(" ");
-				splitMsg.forEach(s=>{
+			// 	let splitMsg = message.content.split(" ");
+			// 	splitMsg.forEach(s=>{
 
-					if(s.startsWith("https://")){
+			// 		if(s.startsWith("https://")){
 
-						toProcess.push(s);
+			// 			toProcess.push(s);
 
-					}
+			// 		}
 
-				});
+			// 	});
 
-				toProcess.forEach(linkString=>{
+			// 	toProcess.forEach(linkString=>{
 
-					const twitterMatch = linkString.match(/^https:\/\/(www\.)?((twitter)|(fxtwitter)|(vxtwitter)|(fixupx)|(x))(\.com)\/\w*\/status\/[0-9]*/gm);
-					if(twitterMatch) {
-						type = "twitter";
-						splitIndex = 3;
-					}
+			// 		const twitterMatch = linkString.match(/^https:\/\/(www\.)?((twitter)|(fxtwitter)|(vxtwitter)|(fixupx)|(x))(\.com)\/\w*\/status\/[0-9]*/gm);
+			// 		if(twitterMatch) {
+			// 			type = "twitter";
+			// 			splitIndex = 3;
+			// 		}
 
-					root = linkString.split('/')[splitIndex];
+			// 		root = linkString.split('/')[splitIndex];
 
-					if(root.startsWith("www.") && type === "url") {
-						const rootD = root.split(".");
-						rootD.splice(0,1);
-						root = rootD.join(".");
-					}
+			// 		if(root.startsWith("www.") && type === "url") {
+			// 			const rootD = root.split(".");
+			// 			rootD.splice(0,1);
+			// 			root = rootD.join(".");
+			// 		}
 
-				});
+			// 	});
 
-				if(root) {
+			// 	if(root) {
 
-					const hasBlock = await db.q("SELECT rl, reason FROM interaction_warnlist WHERE type = ? AND rl = ? AND active = 1",[type,root]).catch(e=>console.log(e));
-					if(hasBlock && hasBlock.length > 0) {
+			// 		const hasBlock = await db.q("SELECT rl, reason FROM interaction_warnlist WHERE type = ? AND rl = ? AND active = 1",[type,root]).catch(e=>console.log(e));
+			// 		if(hasBlock && hasBlock.length > 0) {
 	
-						let blockText = `${type==="twitter"?"@":""}${root} has been flagged as being an unreliable source of information. Please find alternate sources.`;
+			// 			let blockText = `${type==="twitter"?"@":""}${root} has been flagged as being an unreliable source of information. Please find alternate sources.`;
 	
-						if(hasBlock[0].reason) {
-							blockText = hasBlock[0].reason;
-						}
+			// 			if(hasBlock[0].reason) {
+			// 				blockText = hasBlock[0].reason;
+			// 			}
 	
-						await message.reply({embeds:[{
-							title:"WARNING",
-							description:blockText,
-							color:15105570
-						}]});
+			// 			await message.reply({embeds:[{
+			// 				title:"WARNING",
+			// 				description:blockText,
+			// 				color:15105570
+			// 			}]});
 	
-						// await message.delete();
+			// 			// await message.delete();
 	
-						return;
+			// 			return;
 
-					}
+			// 		}
 
-				}
+			// 	}
 
-			}
+			// }
 
 			//
 			// Reply Redirect
@@ -200,7 +200,7 @@ module.exports = {
 					const hasRole = message.member.roles.cache.some(role => ['Registered'].includes(role.name));
 					if(!hasRole) return;
 
-					
+					if(message.author.bot) return; // ignore if user is a bot
 
 					message.mentions.channels.each(async channelMentioned=>{
 	
@@ -208,7 +208,7 @@ module.exports = {
 						if(!channelMentioned.isTextBased()) return;
 	
 						let channelMentionSend = parentMsg.content;
-						if(parentMsg.author.id !== discord.Client.user.id) {
+						if(!parentMsg.author.bot) {
 							channelMentionSend = `By ${parentMsg.author.toString()} in ${message.channel.toString()}\n${parentMsg.content}`;
 						}
 
