@@ -1,4 +1,6 @@
-import {Cal as CalendarOptions} from "../../conf/google/options.json"
+import options from "../../conf/google/options.json";
+
+const CalendarOptions = options.Calendar
 
 import * as T from "../../types/index.d.js"
 

@@ -1,9 +1,13 @@
 import { SlashCommandBuilder, } from "@discordjs/builders";
+import { textToUnixTimeRange, toStringCalendar } from "../../models/google.js"
+import * as T from "../../../types/index";
+
+
 // import discord from "../../services/discord";
-// import google from "../../services/google";
+import google from "../../services/google";
 // import {CalendarModel} from  "../../models/google";
 // import {Eurobot} from "../../../types/index";
-// import { EmbedBuilder } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 
 const data = new SlashCommandBuilder()
 	.setName('calendar')
@@ -21,35 +25,34 @@ data.addStringOption(option =>
 		)
 );
 
-// module.exports = {
+module.exports = {
 
-// 	data: data,
+	data: data,
 
-// 	async execute(interaction:any) {
+	async execute(interaction:any) {
 
-// 		const model = new CalendarModel();
+		let timespan = "7d"
+		const stringOption = interaction.options.getString('timespan');
+		if(stringOption) timespan = stringOption;
 
-// 		let timespan = "7d"
-// 		const stringOption = interaction.options.getString('timespan');
-// 		if(stringOption) timespan = stringOption;
+		const span:T.CalendarSpan|undefined = textToUnixTimeRange(timespan);
+		if(!span) return;
+		const items = await google.Calendar(span.range).catch(e=>{console.log(e)});
+        if(!items || items.length < 1) return;
 
-// 		const span:Eurobot.Calendar.Span = model.textToUnixTimeRange(timespan);
-// 		const items = await google.Calendar(span.range).catch(e=>{console.log(e)});
-//         if(!items || items.length < 1) return;
+		const calendar = toStringCalendar(items,span)
 
-// 		const calendar = model.toStringCalendar(items,span)
+		let calendarDescription:string = `Calendar for ${span.human}\n\n`;
 
-// 		let calendarDescription:string = `Calendar for ${span.human}\n\n`;
+		const embed = new EmbedBuilder()
+			.setTitle(`🇪🇺 Eurobot Calendar`)
+			.setDescription(calendarDescription + calendar)
+			.setColor(0x001489)
+			.setFooter({text:'You can find our calendar here: https://bit.ly/30uIhtL'});
 
-// 		const embed = new EmbedBuilder()
-// 			.setTitle(`🇪🇺 Eurobot Calendar`)
-// 			.setDescription(calendarDescription + calendar)
-// 			.setColor(0x001489)
-// 			.setFooter({text:'You can find our calendar here: https://bit.ly/30uIhtL'});
+		interaction.reply({embeds:[embed],ephemeral:true});
 
-// 		interaction.reply({embeds:[embed],ephemeral:true});
+		return;
 
-// 		return;
-
-// 	},
-// };
+	},
+};

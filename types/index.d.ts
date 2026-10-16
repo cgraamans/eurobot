@@ -4,6 +4,11 @@ import mastodon from 'src/services/mastodon';
 
 declare module '*';
 
+declare module "*.json" {
+  const value: any;
+  export default value;
+}
+
 declare module "discord.js" {
     export interface Client {
       commands: Collection<unknown, any>

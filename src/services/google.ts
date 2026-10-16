@@ -1,7 +1,7 @@
-import privatekey from "../../conf/google/Eurobot-Calendar-1c54f0456b16.json"
+import calendarOptions from "../../conf/google/Eurobot-Calendar-1c54f0456b16.json";
 import {google, calendar_v3} from "googleapis";
-import {Cal as CalendarOptions} from "../../conf/google/options.json"
-import * as T from "../../types/index.d.js"
+import options from "../../conf/google/options.json";
+import * as T from "../../types/index.js"
 
 export class Google {
 
@@ -16,9 +16,9 @@ export class Google {
         // configure a Google JWT auth client
         this.jwtClient = new google.auth.JWT(
 
-            privatekey.client_email,
+            calendarOptions.client_email,
             undefined,
-            privatekey.private_key,
+            calendarOptions.private_key,
             ["https://www.googleapis.com/auth/calendar"]
 
         );
@@ -59,7 +59,7 @@ export class Google {
             this.calendar.events.list({
             
                 auth: this.jwtClient,
-                calendarId: CalendarOptions.calendarID,
+                calendarId: options.Calendar.calendarID,
                 timeMin:range.from,
                 timeMax:range.to,
                 singleEvents:true,
