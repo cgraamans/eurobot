@@ -1,114 +1,114 @@
-import db from "../services/db";
-import Discord from "discord.js";
-import reddit from "../services/reddit";
-import {Eurobot} from "../../types/index.d"
+// import db from "../services/db";
+// import Discord from "discord.js";
+// import reddit from "../services/reddit";
+// import {Eurobot} from "../../types/index.d"
 
-export default class NewsModel {
+// export default class NewsModel {
 
-    public maxListSize:number;
+//     public maxListSize:number;
 
-    constructor(maxListSize:number = 3) {
+//     constructor(maxListSize:number = 3) {
 
-        this.maxListSize = maxListSize;
+//         this.maxListSize = maxListSize;
 
-    }
+//     }
 
-    public async getKeywordObjRow(keyword:string) {
+//     public async getKeywordObjRow(keyword:string) {
 
-        const keyDefList:Eurobot.News.Row[] = await db.q(`
-                SELECT * FROM discord_feeds WHERE \`key\` = ?
-            `,
-            [keyword.toLowerCase()])
-            .catch(e=>{console.log(e)});
+//         const keyDefList:Eurobot.News.Row[] = await db.q(`
+//                 SELECT * FROM discord_feeds WHERE \`key\` = ?
+//             `,
+//             [keyword.toLowerCase()])
+//             .catch(e=>{console.log(e)});
 
-        if(keyDefList && keyDefList.length > 0) return keyDefList[0];
+//         if(keyDefList && keyDefList.length > 0) return keyDefList[0];
         
-        return;
+//         return;
 
-    }
+//     }
 
-    // TODO: Function for raw output to replace keydeflist in get
-    public async get(obj:Eurobot.News.Obj,type:string = "hot") {
+//     // TODO: Function for raw output to replace keydeflist in get
+//     public async get(obj:Eurobot.News.Obj,type:string = "hot") {
 
-        if(type === "hot") {
+//         if(type === "hot") {
 
-            let hot = await reddit.client.getHot(obj.keyword,{limit:this.maxListSize+2})
+//             let hot = await reddit.client.getHot(obj.keyword,{limit:this.maxListSize+2})
 
-            if(hot){
+//             if(hot){
 
-                obj.subreddit = hot;
+//                 obj.subreddit = hot;
             
-            }
+//             }
 
-        }
+//         }
 
-        if(type === "new") {
+//         if(type === "new") {
 
 
-            let New = await reddit.client.getNew(obj.keyword,{limit:this.maxListSize+2})
+//             let New = await reddit.client.getNew(obj.keyword,{limit:this.maxListSize+2})
 
-            if(New){
+//             if(New){
 
-                obj.subreddit = New;
+//                 obj.subreddit = New;
             
-            }
+//             }
 
-        }
+//         }
 
-        return obj;
+//         return obj;
 
-    }
+//     }
 
-    // Convert news to rich output
-    // toRich
-    public toRich(news:Eurobot.News.Obj) {
+//     // Convert news to rich output
+//     // toRich
+//     public toRich(news:Eurobot.News.Obj) {
 
-        if(!news.row) return;
+//         if(!news.row) return;
 
-        let name = news.keyword
+//         let name = news.keyword
 
-        if(news.row.subreddit) name = news.row.subreddit;
-        if(news.row.name) name = news.row.name;
+//         if(news.row.subreddit) name = news.row.subreddit;
+//         if(news.row.name) name = news.row.name;
 
-        let text = ``;
-        let footer = `Source: ${name}`;
+//         let text = ``;
+//         let footer = `Source: ${name}`;
 
-        // subreddits
-        if(news.subreddit && news.subreddit.length > 0) {
+//         // subreddits
+//         if(news.subreddit && news.subreddit.length > 0) {
 
-            let embed = new Discord.EmbedBuilder()
-                .setTitle(`🇪🇺 Eurobot News`)
-                .setColor(0xFFCC00);
-            if(news.row.url) {
-                footer = `Source: ${name} | URL: ${news.row.url}`;
-            }
-            embed.setFooter({text:footer});
+//             let embed = new Discord.EmbedBuilder()
+//                 .setTitle(`🇪🇺 Eurobot News`)
+//                 .setColor(0xFFCC00);
+//             if(news.row.url) {
+//                 footer = `Source: ${name} | URL: ${news.row.url}`;
+//             }
+//             embed.setFooter({text:footer});
 
-            // filter sticked
-            news.subreddit = news.subreddit.filter(submission=>{
-                return !submission.stickied;
-            });
+//             // filter sticked
+//             news.subreddit = news.subreddit.filter(submission=>{
+//                 return !submission.stickied;
+//             });
 
-            // reduce to max list size
-            news.subreddit.length = this.maxListSize;
+//             // reduce to max list size
+//             news.subreddit.length = this.maxListSize;
 
-            let thumbnail:string;
-            news.subreddit.forEach((submission)=>{
+//             let thumbnail: string | undefined = undefined;
+//             news.subreddit.forEach((submission)=>{
 
-                if(!thumbnail && submission.thumbnail && submission.thumbnail !== "self" && submission.thumbnail !== "nsfw" && submission.thumbnail !== "default") thumbnail = submission.thumbnail; 
+//                 if(!thumbnail && submission.thumbnail && submission.thumbnail !== "self" && submission.thumbnail !== "nsfw" && submission.thumbnail !== "default") thumbnail = submission.thumbnail; 
                 
-                text += `🔹${submission.title}\n<${submission.url}>\n\n`;
+//                 text += `🔹${submission.title}\n<${submission.url}>\n\n`;
 
-            });
-            if(thumbnail) embed.setThumbnail(thumbnail);
-            embed.setDescription(text);
+//             });
+//             if(thumbnail) embed.setThumbnail(thumbnail);
+//             embed.setDescription(text);
 
-            return embed;
+//             return embed;
 
-        }
+//         }
 
-        return;
+//         return;
 
-    } // toRich
+//     } // toRich
 
-}
+// }

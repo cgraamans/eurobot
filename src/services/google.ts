@@ -1,7 +1,7 @@
 import privatekey from "../../conf/google/Eurobot-Calendar-1c54f0456b16.json"
 import {google, calendar_v3} from "googleapis";
-import {calendar as CalendarOptions} from "../../conf/google/options.json"
-import {Eurobot} from "../../types/index";
+import {Cal as CalendarOptions} from "../../conf/google/options.json"
+import * as T from "../../types/index.d.js"
 
 export class Google {
 
@@ -17,7 +17,7 @@ export class Google {
         this.jwtClient = new google.auth.JWT(
 
             privatekey.client_email,
-            null,
+            undefined,
             privatekey.private_key,
             ["https://www.googleapis.com/auth/calendar"]
 
@@ -52,7 +52,7 @@ export class Google {
     }
 
     // Retrieve Google Calendar
-    public Calendar(range:Eurobot.Calendar.Range):Promise<any> {
+    public Calendar(range:T.CalendarRange):Promise<any> {
 
         return new Promise((resolve,reject)=>{
 

@@ -1,5 +1,6 @@
-import { AtpAgent, RichText } from "@atproto/api";
+import { error } from "console";
 import urlMetadata from 'url-metadata';
+import { AtpAgent, RichText } from "@atproto/api";
 
 export class BlueSky {
 
@@ -19,7 +20,9 @@ export class BlueSky {
 
     constructor() {
 
-      this.blueskyPassword = process.env.EUROBOT_BLUESKY_KEY;
+        if(!process.env.EUROBOT_BLUESKY_KEY) throw error;
+
+        this.blueskyPassword = process.env.EUROBOT_BLUESKY_KEY;
 
     }
 
@@ -28,43 +31,42 @@ export class BlueSky {
     //
     public async upImageToBSky(url:string, agent:AtpAgent) {
 
-      try {
+        try {
 
-        let data;
+            let data;
 
-        // Get the fileblob
-        let blob = await fetch(url).then(r => r.blob())
-          .catch(e=>console.log(e));
-        if(blob) {
-          
-          // Turn it into an arrayBuffer
-          const buffer = await blob.arrayBuffer()
-            .catch(e=>{console.log(e)});
-          if(buffer) {
+            // Get the fileblob
+            let blob = await fetch(url).then(r => r.blob())
+            .catch(e=>console.log(e));
+            if(blob) {
+            
+            // Turn it into an arrayBuffer
+            const buffer = await blob.arrayBuffer()
+                .catch(e=>{console.log(e)});
+            if(buffer) {
 
-            // make it an int8 Array
-            const int8Arr = new Uint8Array(buffer);
-            if(int8Arr) {
+                // make it an int8 Array
+                const int8Arr = new Uint8Array(buffer);
+                if(int8Arr) {
 
-              // Upload it to Bluesky
-              data = await agent.uploadBlob(int8Arr)
-                .catch(e=>console.log(e));
+                // Upload it to Bluesky
+                data = await agent.uploadBlob(int8Arr);
+
+                }
 
             }
 
-          }
+            }
+
+            return data;
+
+        } catch(e) {
+
+            console.log(e);
+
+            return;
 
         }
-
-        return data;
-
-      } catch(e) {
-
-        console.log(e);
-
-        return;
-
-      }
 
     }
 
@@ -83,7 +85,6 @@ export class BlueSky {
         identifier: "forumgotterfunken@gmail.com",
         password: this.blueskyPassword,
       })
-      .catch(e=>console.log(e));
 
       // Is there a link?
       const matches = text.match(/https?:\/\/\S+/gi);
@@ -156,12 +157,11 @@ export class BlueSky {
 
       // Enrich text
       const richText = new RichText({ text:text });
-      await richText.detectFacets(agent)
-        .catch(e=>console.log(e));
+      await richText.detectFacets(agent);
 
       // Prepare payload
       let payload = {
-          $type: "app.bsky.feed.post",
+          $type: "app.bsky.feed.post" as const,
           text: richText.text,
           facets: richText.facets,
           createdAt: new Date().toISOString(),

@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, SlashCommandStringOption } from "@discordjs/builders";
 import { EmbedBuilder, CommandInteraction, Role, TextChannel } from "discord.js";
 
-import WeatherModel from "../../models/weather";
+import {getWeather} from "../../models/https.js";
 
 const data = new SlashCommandBuilder()
 	.setName('weather')
@@ -25,10 +25,9 @@ module.exports = {
 		const embed = new EmbedBuilder();
 		embed.setColor(0x001489);
 
-		const stringOption = interaction.options.getString('place');
+		const stringOption = interaction.options.getString('place', true);
 
-		const model = new WeatherModel();
-		const result = await model.getCity(stringOption).catch((e:any)=>{console.log(e)});
+		const result = await getWeather(stringOption).catch((e:any)=>{console.log(e)});
 		if(!result) return;
 
 		embed.setTitle("Eurobot Weather Report");

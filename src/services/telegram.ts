@@ -1,28 +1,28 @@
-import Tools from '../tools';
-import TelegramBot from "node-telegram-bot-api";
+// import Tools from '../tools';
+// import TelegramBot from "node-telegram-bot-api";
 
-export class Telegram {
+// export class Telegram {
 
-    private static instance:Telegram;
+//     private static instance:Telegram;
 
-    public client:TelegramBot;
+//     public client:TelegramBot;
 
-    // Service Instance Initialization
-    static getInstance() {
+//     // Service Instance Initialization
+//     static getInstance() {
 
-        if (!Telegram.instance) {
-            Telegram.instance = new Telegram();
-        }
-        return Telegram.instance;
+//         if (!Telegram.instance) {
+//             Telegram.instance = new Telegram();
+//         }
+//         return Telegram.instance;
 
-    }
+//     }
 
-    constructor() {
+//     constructor() {
 
-        this.client = new TelegramBot(process.env.EUROBOT_TELEGRAM_TOKEN,{polling:true});
+//         this.client = new TelegramBot(process.env.EUROBOT_TELEGRAM_TOKEN,{polling:true});
 
-    }
+//     }
 
-}
+// }
 
-export default Telegram.getInstance();
+// export default Telegram.getInstance();

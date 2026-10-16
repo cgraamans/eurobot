@@ -10,6 +10,73 @@ declare module "discord.js" {
     }
 }
 
+export interface ChannelConfig {
+    channel:string,
+    type:string
+}
+
+export interface ResponseConfig {
+    response:string,
+    category:number|null
+}
+
+export interface mediaMetaDataSourceObj {
+    y:number,
+    x:number,
+    u:string
+}
+
+export interface mediaMetaDataObj {
+    [key:string]:{
+        status:string,
+        e:string,
+        m:string,
+        p:mediaMetaDataSourceObj[],
+        s:mediaMetaDataSourceObj,
+        id:string
+    }
+}
+
+export interface SubmissionObj extends Submission {
+    media_metadata?:mediaMetaDataObj[],
+}
+
+export interface CalendarRange {
+    from:Date,
+    to?:Date
+}
+
+export interface CalendarSpan {
+    human:string,
+    range:CalendarRange
+}
+
+export interface TreatyObj {
+
+    title:string,
+    article?:string,
+    articleText?:string,
+    articleLink?:string,
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export namespace Eurobot {
 
     export interface Config {
@@ -118,19 +185,7 @@ export namespace Eurobot {
     
     }
 
-    export namespace Calendar {
 
-        export interface Span {
-            human:string
-            range:Calendar.Range
-        }
-
-        export interface Range {
-            from:Date
-            to?:Date
-        }
-
-    }
 
     export namespace Rank {
 
@@ -144,18 +199,7 @@ export namespace Eurobot {
 
     }
 
-    export namespace Treaty {
 
-        export interface Obj {
-
-            title:string,
-            article?:string,
-            articleText?:string,
-            articleLink?:string,
-
-        }
-
-    }
 
     // OLD MODELS FOR REFERENCE
     export namespace Models {

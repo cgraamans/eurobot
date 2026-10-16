@@ -1,16 +1,24 @@
 import * as fs from "fs";
 import { Collection, EmbedBuilder, TextChannel} from "discord.js";
-import {Eurobot} from "./types/index";
+import { Listing } from "snoowrap";
 
-import Discord from "./src/services/discord";
-import db from "./src/services/db";
+import Discord from "./src/services/discord.js";
+import db from "./src/services/db.js";
+import reddit from "./src/services/reddit.js";
+import google from "./src/services/google.js";
 
-import {CalendarModel} from "./src/models/google";
-import NewsModel from "./src/models/news";
-import DiscordModel from "./src/models/discord";
+import { textToUnixTimeRange, toStringCalendar } from "./src/models/google.js"
+import { publishRedditToDiscord, fetchRedditVideo } from "./src/models/reddit.js";
+import { postEmbedToDiscord } from "./src/models/discord.js"
+import * as T from "./types/index.d.js";
 
-import google from "./src/services/google";
-import Tools from './src/tools';
+
+
+// import {CalendarModel} from "./src/models/google";
+// import NewsModel from "./src/models/news";
+// import DiscordModel from "./src/models/discord";
+
+// import Tools from './src/tools';
 
 import * as schedule from "node-schedule";
 import * as path from 'path';
@@ -19,24 +27,24 @@ let jobs:schedule.Job[] = [];
 
 
 
-const calendarModel = new CalendarModel();
-const discordModel = new DiscordModel();
+// const calendarModel = new CalendarModel();
+// const discordModel = new DiscordModel();
 
 console.log(`APP [${new Date()}] @ ${__dirname}`);
 
-const welcomeMessage = `Welcome to Forum Gotterfunken.
+// const welcomeMessage = `Welcome to Forum Gotterfunken.
 
-Forum Gotterfunken is an EU-OSINT Server on Discord. EU-OSINT stands for European Union - Open Source Intelligence. We aim to provide up to date news and information regarding events in and around the EU from a European Perspective.
+// Forum Gotterfunken is an EU-OSINT Server on Discord. EU-OSINT stands for European Union - Open Source Intelligence. We aim to provide up to date news and information regarding events in and around the EU from a European Perspective.
 
-Please read the #about-us and adhere to the #rules, say hello in #introduce-yourself, visit the serious-effort channels for news and information and come hang out in #general-effort for a casual chat.
+// Please read the #about-us and adhere to the #rules, say hello in #introduce-yourself, visit the serious-effort channels for news and information and come hang out in #general-effort for a casual chat.
 
-- type \`/help\` for more information  
-- type \`/roles\` to view avaiable roles and functions.
+// - type \`/help\` for more information  
+// - type \`/roles\` to view avaiable roles and functions.
 
-Be nice and remember the human.
+// Be nice and remember the human.
 
-Kindest regards, 
-the Mod Team`;
+// Kindest regards, 
+// the Mod Team`;
 
 // SET COMMANDS
 try {
@@ -88,18 +96,6 @@ Discord.Client.on("interactionCreate", async (interaction)=>{
 
 });
 
-// guildMemberAdd Message
-Discord.Client.on("guildMemberAdd", async (member)=>{
-
-    const embed = new EmbedBuilder()
-    .setTitle(`🇪🇺 Welcome to Forum Gotterfunken.`)
-    .setDescription(welcomeMessage)
-    .setColor(0x001489)
-    .setFooter({text:`use /help in the discord server for more information. :)`});
-    await member.send({embeds:[embed]}).catch(e=>console.log(e));
-    
-});
-
 //
 // JOBS
 //
@@ -111,11 +107,12 @@ try {
 
         console.log(`> JOB:Calendar (Morning)`);
 
-		const span:Eurobot.Calendar.Span = calendarModel.textToUnixTimeRange("today");
+		const span:T.CalendarSpan|undefined = textToUnixTimeRange("today");
+        if(!span) return;
 		const items = await google.Calendar(span.range).catch(e=>{console.log(e)});
         if(!items || items.length < 1) return;
 
-		const calendar = calendarModel.toStringCalendar(items,span)
+		const calendar = toStringCalendar(items,span)
 
 		const calendarDescription:string = `Calendar for ${span.human}\n\n`;
 
@@ -125,120 +122,116 @@ try {
 			.setColor(0x001489)
             .setFooter({text:`use /calendar :)`});
     
-        await discordModel.pushEmbedToDiscord("Job-Calendar",embed);
+        await postEmbedToDiscord("calendar",embed);
 
         return;
 
     }));
 
-
     // CALENDAR JOB EVENING
-    jobs.push(schedule.scheduleJob(`0 19 * * *`, async function(){
-    
+    jobs.push(schedule.scheduleJob(`0 21 * * *`, async function(){
+
         console.log(`> JOB:Calendar (Evening)`);
 
-		const span:Eurobot.Calendar.Span = calendarModel.textToUnixTimeRange("tomorrow");
+		const span:T.CalendarSpan|undefined = textToUnixTimeRange("tomorrow");
+        if(!span) return;
 		const items = await google.Calendar(span.range).catch(e=>{console.log(e)});
         if(!items || items.length < 1) return;
 
-		const calendar = calendarModel.toStringCalendar(items,span)
+		const calendar = toStringCalendar(items,span)
 
 		const calendarDescription:string = `Calendar for ${span.human}\n\n`;
 
 		const embed = new EmbedBuilder()
 			.setTitle(`🇪🇺 Eurobot Calendar`)
 			.setDescription(calendarDescription + calendar)
-			.setColor(0x001489);  
+			.setColor(0x001489)
+            .setFooter({text:`use /calendar :)`});
     
-        await discordModel.pushEmbedToDiscord("Job-Calendar",embed);
+        await postEmbedToDiscord("calendar",embed);
 
         return;
 
     }));
 
-    // News JOB
-    jobs.push(schedule.scheduleJob(`0 */4 * * *`, async function(){
+//     // News JOB
+//     jobs.push(schedule.scheduleJob(`0 */4 * * *`, async function(){
         
-        let newsObj:Eurobot.News.Obj = {keyword:"eunews"};
+//         let newsObj:Eurobot.News.Obj = {keyword:"eunews"};
 
-        const subreddits = ['eunews','europeanarmy','europeanfederalists','europeanculture','europeanunion','euspace','eutech'];
-        newsObj.keyword = subreddits[Math.floor(Math.random()*subreddits.length)];
+//         const subreddits = ['eunews','europeanarmy','europeanfederalists','europeanculture','europeanunion','euspace','eutech'];
+//         newsObj.keyword = subreddits[Math.floor(Math.random()*subreddits.length)];
         
-        console.log(`> JOB:News (${newsObj.keyword})`);
+//         console.log(`> JOB:News (${newsObj.keyword})`);
 
-        // get news
-        const newsModel = new NewsModel(3);
-		const keywordObjRow = await newsModel.getKeywordObjRow(newsObj.keyword);
-        if(!keywordObjRow) return;
+//         // get news
+//         const newsModel = new NewsModel(3);
+// 		const keywordObjRow = await newsModel.getKeywordObjRow(newsObj.keyword);
+//         if(!keywordObjRow) return;
         
-        newsObj.row = keywordObjRow;
+//         newsObj.row = keywordObjRow;
 
-		// get news
-		newsObj = await newsModel.get(newsObj,"new");
-        if(!newsObj) return;
+// 		// get news
+// 		newsObj = await newsModel.get(newsObj,"new");
+//         if(!newsObj) return;
 
-		if((newsObj.subreddit && newsObj.subreddit.length > 0) || (newsObj.twitter && newsObj.twitter.length > 0)) {    
+// 		if((newsObj.subreddit && newsObj.subreddit.length > 0) || (newsObj.twitter && newsObj.twitter.length > 0)) {    
 
-            const embed = newsModel.toRich(newsObj);
-            if(!embed) return;
+//             const embed = newsModel.toRich(newsObj);
+//             if(!embed) return;
+//             if(!newsObj.row) return;
             
-            embed.setFooter({text:`/r/${newsObj.row.name} - use /news for more news :)`});
+//             embed.setFooter({text:`/r/${newsObj.row.name} - use /news for more news :)`});
 
-            await discordModel.pushEmbedToDiscord("Job-News",embed);
+//             await discordModel.pushEmbedToDiscord("Job-News",embed);
     
-        }
+//         }
 
-        return;
+//         return;
 
-    }));
+//     }));
 
-    // News to articles job
+    // JOB:Reddit -> #News
     jobs.push(schedule.scheduleJob(`*/2 * * * *`, async function(){
 
-        let newsObj:Eurobot.News.Obj = {keyword:"EUNews"};
-        const subreddits = ['EUNews','EuropeanArmy','EuropeanUnion','EUSpace','EUTech','EuropeanFederalists','EuropeanCulture'];
+        const subreddits = await db.query(`SELECT * FROM reddit_feeds WHERE active = 1`);
+        if(!subreddits || subreddits.length < 1) return;
 
-        newsObj.keyword = subreddits[Math.floor(Math.random()*subreddits.length)];
-        console.log(`> JOB:News-To-Articles (${newsObj.keyword})`);
+        const subreddit = subreddits[Math.floor(Math.random()*subreddits.length)];
+        console.log(`> JOB:Reddit (${subreddit.name}) -> #News`);
 
-        // get news
-        const newsModel = new NewsModel(10);
+        const newList: Listing<T.SubmissionObj>|void = await reddit.client.getNew(subreddit.name, { limit: 30 }).catch(e=>console.log(e));
 
-        newsObj = await newsModel.get(newsObj);
-        if(!newsObj) return;
-        if((newsObj.subreddit &&newsObj.subreddit.length > 0) || (newsObj.twitter && newsObj.twitter.length > 0)) {    
+        if(!newList || newList.length < 1) return;
 
-            await Promise.all(newsObj.subreddit.map(async (item)=>{
+        for (const item of newList) {
 
-                if(!item.title || !item.url) return;
-                if(item.thumbnail === "self" || item.thumbnail === "nsfw" || item.thumbnail === "default") return;
-                if(item.is_self || item.is_video || item.is_meta) return;
-                if(item.url.startsWith("https://v.redd.it")) return;
+            if(!item.title || !item.url) continue;
+            if(item.thumbnail === "self" || item.thumbnail === "nsfw" || item.thumbnail === "default") continue;
+            if(item.is_self || item.is_video) continue;
+            if(item.url.startsWith("https://v.redd.it")) {
 
-                const hasWhitelist = await db.q(`SELECT * from reddit_whitelist WHERE name = ?`,[item.author.name]);
-                if(hasWhitelist.length < 1) return;
+                const video = fetchRedditVideo(item);
+                console.log(video);
+                continue;
 
-                const hasDoubles = await db.q(`
-                    SELECT * FROM log_articles WHERE text = ? OR text LIKE ? OR text LIKE ? OR text LIKE ?
-                    `,[
-                        item.url,
-                        item.url+"%",
-                        "%"+item.url,
-                        "%"+item.url+"%"
-                    ])
-                    .catch(e=>console.log(e));
-    
-                if(hasDoubles.length > 0) return;
-               
-                // post to articles
-                await discordModel.pushTextToDiscord("Reddit-to-Articles",`${item.title}\n${item.link_flair_text?"#" + item.link_flair_text + " ":""}#${newsObj.keyword} \n`+item.url);
+            }
 
-            }));
+            const hasDoubles = await db.query(`SELECT * FROM discord_reddit_log WHERE id = ? OR url = ?`,[item.id,item.url]);
+            if(hasDoubles && hasDoubles.length > 0) continue;
+
+            const hasWhitelist = await db.query(`SELECT name from reddit_whitelist WHERE name = ?`,[item.author.name]);
+            if(!hasWhitelist || hasWhitelist.length < 1) continue;
+
+            const post = await publishRedditToDiscord(item,subreddit.name,"reddit_news").catch(e=>{console.error(e)});
+
+            if(post) {
+                await db.query(`INSERT INTO discord_reddit_log (id,url) VALUES (?,?)`,[item.id,item.url]);
+            }
 
         }
 
     }));
-
 
 } catch(e) {
 
